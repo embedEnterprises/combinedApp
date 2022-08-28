@@ -1,0 +1,58 @@
+<div style="height:5%">
+  <nav>
+    <ul>
+<!--      <li><img src="assets\Logo.png" href="#"></li>-->
+      <li style="font-family:Brush Script MT; font-weight: bold;"> T-TOYS </li>
+      <li>
+        <select name="Toys" style="border:0px;">
+          <option value="Smart car"><a href="#">Toys</a></option>
+          <option value="Smart car"><a href="#">Car</a></option>
+          <option value="Smart Quad"><a href="#">Quad</a></option>
+        </select>
+      </li>
+      <li><a routerLink="/">Sketch</a></li>
+      <li><a routerLink="">CODE</a></li>
+      <li><a routerLink="/save">SAVE</a></li>
+<!--      <li><button class="btn btn-lg btn-outline-primary" (click)="open(content)">SaveP</button></li>l-->
+      <li><button (click)="save_file_cloud()" id="SaveTest">SaveLocal</button></li>
+      <li><button (click)="open_file_cloud()" id="OpenTest">OpenLocal</button></li>
+      <li><a routerLink="/open">Open</a></li>
+      <li><button (click)="compile_and_upload()" id="UploadButton">Upload code</button></li>
+      <li><button (click)="upload_default()" id="UploadOButton">Upload Original code</button></li>
+      <li><a routerLink="/sign-in">SignIn</a></li>
+    </ul>
+  </nav>
+</div>
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">File Save</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #saveFilePopUp = "ngForm">
+      <div class="mb-3">
+        <label for="dateOfBirth">File Name</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="test" name="dp">
+<!--          <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>-->
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+<!--    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
+    <button type="button" class="btn btn-outline-dark" (click)="close(saveFilePopUp.value)">Save</button>
+  </div>
+</ng-template>
+
+
+
+
+
+<div *ngIf="loading" id="LoadDiv">
+  {{message}}
+  <img src="assets\load.gif" *ngIf="loading_gif"  width="50" height="50">
+</div>

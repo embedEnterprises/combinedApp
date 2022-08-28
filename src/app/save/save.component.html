@@ -1,0 +1,10 @@
+<app-header></app-header>
+<div id="saveDiv">
+
+  <form #basicForm="ngForm" (ngSubmit)="save_file_cloud()">
+    <input type="text" name="filename" placeholder="Enter file name" />
+    <br /> <br />
+    <button [disabled]="isDisabled">Save</button>
+  </form>
+
+</div>

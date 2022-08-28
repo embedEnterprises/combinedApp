@@ -1,0 +1,24 @@
+#saveDiv {
+    height: 80%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+input[type=text] {
+  width: 25%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+}
+
+button{
+  width: 10%;
+  padding: 8px 14px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+form{
+    margin: auto;
+    width: 60%;
+    text-align: center;
+}
