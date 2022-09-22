@@ -24,6 +24,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
 import { CruiseComponent } from './cruise/cruise.component';
 import { DeviceConfigurationService } from './device-configuration.service';
+import { FabricComponent } from './fabric/fabric.component';
 
 const routes: Routes = [
   { path: '', component: BlocklyComponent },
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'open', component: FileOpenComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'cruise' , component: CruiseComponent}
+  { path: 'cruise' , component: CruiseComponent},
+  {path:'fabric', component:FabricComponent}
 ]
 
 @NgModule({
@@ -42,7 +44,8 @@ const routes: Routes = [
         SaveComponent,
         FileOpenComponent,
         SignInComponent,
-        RegisterComponent
+        RegisterComponent,
+        FabricComponent
     ],
     imports: [
         BrowserModule,

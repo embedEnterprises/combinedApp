@@ -1,6 +1,8 @@
 import { DeviceConfigurationService } from './../device-configuration.service';
 import { Dashboard } from './dashboard';
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, NgZone, Renderer2, HostListener } from '@angular/core';
+import {fabric} from 'fabric';
+import { GearShift } from './GearShift';
 
 @Component({
   selector: 'app-cruise',
@@ -12,12 +14,17 @@ export class CruiseComponent implements OnInit {
   @ViewChild('canvas', { static: true })
   canvasRef: ElementRef<HTMLCanvasElement>;
 
+  @ViewChild('document', { static: true })
+  document: ElementRef;
+  
   public ctx: CanvasRenderingContext2D;
   requestId: number;
   private dashboard;
   private unListenMouseDown: () => void;
   private unListenTouchDown: () => void;
   private canvas;
+  private canv;
+  private gear;
   constructor(
     private ngZone: NgZone,
     private renderer2: Renderer2,
@@ -37,7 +44,9 @@ export class CruiseComponent implements OnInit {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.ctx = this.canvas.getContext('2d');
-    this.dashboard = new Dashboard(this.ctx, this.renderer2, this.deviceConf, this.ngZone);
+    this.dashboard = new Dashboard(this.ctx, this.renderer2, this.deviceConf, this.ngZone, document);
+    this.canv = new fabric.Canvas('canv');
+    this.gear  = new GearShift(this.ctx, this.renderer2, this.document, this.canv);
     if (this.deviceConf.getDeviceType() == 'desktop') {
       this.unListenMouseDown = this.renderer2.listen(
         this.canvas,
@@ -70,6 +79,7 @@ export class CruiseComponent implements OnInit {
   animate() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.dashboard.update();
+    this.gear.draw();
     this.requestId = requestAnimationFrame(() => this.animate());
   }
 

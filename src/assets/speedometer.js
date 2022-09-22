@@ -543,43 +543,6 @@ class MainCircle extends Circle {
     }
 }
 
-/** Class representing a additional circle that are lower than main and positioned in one of the sides.
- * In the current and standard case it are tachometer on the one side and gas indicator on the another side.
- */
-class AdditionalCircle extends Circle {
-    /**
-     * Creating a additional circle with the given params.
-     * @param {Object} options Parameters of the circle and contained elements. Same as in parent class.
-     * @param {'left'|'right'} side The side where the circle will be displayed relative to the main circle.
-     * @param {number} mainCircleRadius Radius of the main circle. Need for the correct calculation of the radius of the circle.
-     */
-    constructor(options, side, mainCircleRadius) {
-        super(options);
-
-        const cw = canvas.width / 2;
-        const x = cw - (cw -
-            mainCircleRadius / 2 -
-            this.radius -
-            this.circleBorderWidth / 1.25);
-
-        if (side === 'left') {
-            this.x = cw - x;
-        } else if (side === 'right') {
-            this.x = cw + x;
-        } else {
-            throw 'Unknown circle side';
-        }
-
-        this.y = canvas.height / 2 + this.radius / 2 - this.circleBorderWidth * 2;
-
-        this.textMarksOffsetX = 8;
-        this.textMarksOffsetY = 4;
-
-        this.supportColor = 'green';
-        this.x += offsetXVal;
-        this.y += offsetYVal;
-    }
-}
 
 /** Class representing icon. */
 class Icon {
@@ -632,192 +595,6 @@ class TurnSignal {
 }
 
 /**
- * Clears the canvas. Required when update data on the speedometer.
- */
-function clearCanvas() {
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-/**
- * Draws left circle (tachometer).
- * @param {Object} options Circle options such as colors, font etc. In more detail in the description of the class.
- * @param {number} radius Radius of main circle (speedometer). Required to correctly calculate the radius of a circle.
- * @param {number} value Current value of tachometer. Min is 0 (lowest), max is 1 (highest).
- * @param {Object} iconStates States of icons displayed on circle.
- */
-function drawLeftCircle(options, radius, value, iconStates) {
-    const lCircle = new AdditionalCircle(options, 'left', radius);
-    lCircle.draw();
-
-    const addMarksAngles = lCircle.calcMarksAngles(
-        count=8,
-        degAngle=140,
-        startAngle=300
-    );
-
-    const mainMarksAngles = lCircle.calcMarksAngles(
-        count=9,
-        degAngle=160,
-        startAngle=300
-    );
-
-    lCircle.drawDangerZone(
-        angles=addMarksAngles,
-        offset=6,
-        firstNMarks=0,
-        lastNMarks=2
-    );
-
-    lCircle.drawDangerZone(
-        angles=mainMarksAngles,
-        offset=6,
-        firstNMarks=0,
-        lastNMarks=2
-    );
-
-    lCircle.drawMarks(
-        angles=addMarksAngles,
-        length=7.5,
-        lineWidth=2,
-        border=true,
-        offset=1,
-        firstNMarks=0,
-        lastNMarks=2
-    );
-
-    lCircle.drawMarks(
-        angles=mainMarksAngles,
-        length=6,
-        lineWidth=3,
-        border=true,
-        offset=0,
-        firstNMarks=0,
-        lastNMarks=2
-    );
-
-    const textMarksAngles = lCircle.calcTextMarksAngles(
-        count=9,
-        degAngle=160,
-        innerOffset=5,
-        startAngle=300
-    );
-
-    lCircle.drawTextMarks(
-        angles=textMarksAngles,
-        step=1,
-        offset=12.5
-    );
-
-    lCircle.drawIcon('battery', iconStates['battery']);
-    lCircle.drawIcon('oil', iconStates['oil']);
-    lCircle.drawIcon('engineFail', iconStates['engineFail']);
-
-    lCircle.drawMultiplier(1, -20);
-
-    lCircle.drawArrow(
-        value=value,
-        degAngle=160,
-        offset=5,
-        startAngle=300
-    );
-
-    lCircle.drawArrowBody();
-}
-
-/**
- * Draws right circle (gas indicator).
- * @param {Object} options Circle options such as colors, font etc. In more detail in the description of the class.
- * @param {number} radius Radius of main circle (speedometer). Required to correctly calculate the radius of a circle.
- * @param {number} value Current value of gas indicator. Min is 0 (lowest), max is 1 (highest).
- * @param {Object} iconStates States of icons displayed on circle.
- */
-function drawRightCircle(options, radius, value, iconStates) {
-    const rCircle = new AdditionalCircle(options, 'right', radius);
-    rCircle.draw();
-
-    const addMarksAngles = rCircle.calcMarksAngles(
-        count=8,
-        degAngle=140,
-        startAngle=80
-    );
-
-    const mainMarksAngles = rCircle.calcMarksAngles(
-        count=9,
-        degAngle=160,
-        startAngle=80
-    );
-
-    rCircle.drawDangerZone(
-        angles=addMarksAngles,
-        offset=6,
-        firstNMarks=0,
-        lastNMarks=2
-    );
-
-    rCircle.drawDangerZone(
-        angles=mainMarksAngles,
-        offset=6,
-        firstNMarks=0,
-        lastNMarks=2
-    );
-
-    rCircle.drawMarks(
-        angles=addMarksAngles,
-        length=7.5,
-        lineWidth=2,
-        border=true,
-        offset=1,
-        firstNMarks=0,
-        lastNMarks=2,
-        skip='all',
-        skipFrom=0,
-        skipTo=5
-    );
-
-    rCircle.drawMarks(
-        angles=mainMarksAngles,
-        length=6,
-        lineWidth=3,
-        border=true,
-        offset=0,
-        firstNMarks=0,
-        lastNMarks=2,
-        skip='even',
-        skipFrom=0,
-        skipTo=6
-    );
-
-    const textMarksAngles = rCircle.calcTextMarksAngles(
-        count=3,
-        degAngle=160,
-        innerOffset=-5,
-        startAngle=80
-    );
-
-    rCircle.drawTextMarks(
-        angles=textMarksAngles,
-        step=0.5,
-        offset=17.5,
-        fractions=true,
-        reversed=true
-    );
-
-    rCircle.drawIcon('gas', iconStates['gas']);
-    rCircle.drawIcon('trunk', iconStates['trunk']);
-    rCircle.drawIcon('bonnet', iconStates['bonnet']);
-    rCircle.drawIcon('doors', iconStates['doors']);
-
-    rCircle.drawArrow(
-        value=Math.abs(value - 1),
-        degAngle=160,
-        offset=5,
-        startAngle=80
-    );
-
-    rCircle.drawArrowBody();
-}
-
-/**
  * Draws all circles.
  * @param {number} speedometerValue Current speed.
  * @param {number} tachometerValue Curent engine revs.
@@ -827,24 +604,16 @@ function drawRightCircle(options, radius, value, iconStates) {
  * @param {Object} iconStates Current state of icons.
  */
 function drawHello(speedometerValue, tachometerValue, gasValue, mileage, turnSignals, iconStates) {
-    clearCanvas();
-
     const mCircle = new MainCircle(options);
-    drawLeftCircle(options, mCircle.radius, tachometerValue, iconStates);
-    drawRightCircle(options, mCircle.radius, gasValue, iconStates);
-
     mCircle.draw();
-
     const addMarksAngles = mCircle.calcMarksAngles(
         count=10,
         degAngle=180
     );
-
     const mainMarksAngles = mCircle.calcMarksAngles(
         count=11,
         degAngle=200
     );
-
     mCircle.drawMarks(
         angles=addMarksAngles,
         length=7.5,
@@ -854,7 +623,6 @@ function drawHello(speedometerValue, tachometerValue, gasValue, mileage, turnSig
         firstNMarks=0,
         lastNMarks=0
     );
-
     mCircle.drawMarks(
         angles=mainMarksAngles,
         length=7,
@@ -862,22 +630,18 @@ function drawHello(speedometerValue, tachometerValue, gasValue, mileage, turnSig
         border=true,
         offset=3
     );
-
     const textMarksAngles = mCircle.calcTextMarksAngles(
         count=11,
         degAngle=200,
         innerOffset=7.5
     );
-
     mCircle.drawTextMarks(
         angles=textMarksAngles,
         step=20,
         offset=22.5
     );
-
     mCircle.drawTurnSignal(35, -25, 25, 15, turnSignals['right']);
     mCircle.drawTurnSignal(-35, -25, -25, 15, turnSignals['left']);
-
     mCircle.drawIcon('dippedBeam', iconStates['dippedBeam']);
     mCircle.drawIcon('brake', iconStates['brake']);
     mCircle.drawIcon('drift', iconStates['drift']);
@@ -887,17 +651,13 @@ function drawHello(speedometerValue, tachometerValue, gasValue, mileage, turnSig
     mCircle.drawIcon('engineTemp', iconStates['engineTemp']);
     mCircle.drawIcon('stab', iconStates['stab']);
     mCircle.drawIcon('abs', iconStates['abs']);
-
     mCircle.drawMileage(mileage, 0, mileagePos, (100/1260)*canvas.width/100 , (20/560)*canvas.height/100, 2);
-
     mCircle.drawUnit(-25);
-
     mCircle.drawArrow(
         value=speedometerValue,
         degAngle=200,
         offset=10
     );
-
     mCircle.drawArrowBody();
 }
 

@@ -1,0 +1,298 @@
+this.knob.on("moving", (event) => {
+      // var flg = false;
+      // Object.keys(this.paths).map((key) => {
+      //   if(this.knob.isContainedWithinObject(this.paths[key])){flg = true; 
+      //     }
+      // });
+      // console.log(flg);
+      var pointer = canvas.getPointer(event.e);
+      // console.log(this.track.containsPoint(pointer));
+
+    });
+    // this.track.on('mouseout' , ()=> {
+    //   this.knob.selectable = false;
+    //   console.log("out");
+    //   this.m = false;
+    // });
+    this.track.on('mouseover' , (event)=> {
+      this.knob.selectable = true;
+      this.m = false
+      // console.log(event);
+      this.knob.left = event.e.clientX;
+      this.knob.top = event.e.clientY;
+      this.canvas.renderAll();
+      
+    });
+
+    // this.canvas.on('mouse:move' , (event)=> {
+    //   console.log(this.track.containsPoint(event.pointer));
+    // })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+// if(this.knob.isContainedWithinObject(this.paths.first)){
+//   this.knob.lockMovementX=true;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.second)){
+//   this.knob.lockMovementX=true;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.third)){
+//   this.knob.lockMovementX=true;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.fourth)){
+//   this.knob.lockMovementX=true;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.fifth)){
+//   this.knob.lockMovementX=true;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.reverse)){
+//   this.knob.lockMovementY=false;
+//   this.knob.lockMovementX=true;
+// }else if(this.knob.isContainedWithinObject(this.paths.b1)){
+//   this.knob.lockMovementX=false;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.b2)){
+//   this.knob.lockMovementX=false;
+//   this.knob.lockMovementY=true;
+// }else if(this.knob.isContainedWithinObject(this.paths.b3)){
+//   this.knob.lockMovementX=false;
+//   this.knob.lockMovementY=false;
+// }else if(this.knob.isContainedWithinObject(this.paths.b4)){
+//   this.knob.lockMovementX=false;
+//   this.knob.lockMovementY=true;
+// }else if(this.knob.isContainedWithinObject(this.paths.b5)){
+//   this.knob.lockMovementX=false;
+//   this.knob.lockMovementY=false;
+// }else {
+//   this.knob.lockMovementX=true;
+//   this.knob.lockMovementY=true;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//prev gears.ts file
+
+import { fabric } from 'fabric';
+
+export class Gears {
+  trackBack: any;
+  public track: any;
+  trackOptions: any = {
+    stroke: 'red',
+    strokeWidth: 0,
+    fill: true,
+    top: 200,
+    left: 400,
+    perPixelTargetFind: true,
+    scaleX: 10,
+    scaleY: 10,
+    height: 75,
+    width: 50,
+    selectable: false,
+  }
+  trackDims: any = {
+    left: this.trackOptions.left,
+    top: this.trackOptions.top,
+    width: 0,
+    height: 0,
+    center:{
+      x:0,
+      y:0
+    },
+    first: {
+      l: this.trackOptions.left,
+      t: this.trackOptions.top,
+      w: 10 * this.trackOptions.scaleX,
+      h: this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY
+    },
+    b1: {
+      l: this.trackOptions.left,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: 10 * this.trackOptions.scaleY
+    },
+    second: {
+      l: this.trackOptions.left,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 + 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY
+    },
+    b2: {
+      l: this.trackOptions.left + 10 * this.trackOptions.scaleY,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: 10 * this.trackOptions.scaleY
+    },
+    third: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX / 2 - 5 * this.trackOptions.scaleX,
+      t: this.trackOptions.top,
+      w: 10 * this.trackOptions.scaleX,
+      h: this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY
+    },
+    b3: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX / 2 - 5 * this.trackOptions.scaleX,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: 10 * this.trackOptions.scaleY
+    },
+    fourth: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX / 2 - 5 * this.trackOptions.scaleX,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 + 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY
+    },
+    b4: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX / 2 + 5 * this.trackOptions.scaleX,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: 10 * this.trackOptions.scaleY
+    },
+    fifth: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX - 10 * this.trackOptions.scaleX,
+      t: this.trackOptions.top,
+      w: 10 * this.trackOptions.scaleX,
+      h: this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY
+    },
+    b5: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX - 10 * this.trackOptions.scaleX,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: 10 * this.trackOptions.scaleY
+    },
+    reverse: {
+      l: this.trackOptions.left + this.trackOptions.width * this.trackOptions.scaleX - 10 * this.trackOptions.scaleX,
+      t: this.trackOptions.top + this.trackOptions.height * this.trackOptions.scaleY / 2 + 5 * this.trackOptions.scaleY,
+      w: 10 * this.trackOptions.scaleX,
+      h: this.trackOptions.height * this.trackOptions.scaleY / 2 - 5 * this.trackOptions.scaleY
+    }
+  };
+  paths:any = {
+    first: this.getRect(this.trackDims.first),
+    second: this.getRect(this.trackDims.second),
+    third: this.getRect(this.trackDims.third),
+    fourth: this.getRect(this.trackDims.fourth),
+    fifth: this.getRect(this.trackDims.fifth),
+    reverse: this.getRect(this.trackDims.reverse),
+    b1: this.getRect(this.trackDims.b1),
+    b2: this.getRect(this.trackDims.b2),
+    b3: this.getRect(this.trackDims.b3),
+    b4: this.getRect(this.trackDims.b4),
+    b5: this.getRect(this.trackDims.b5),
+  };
+
+  knob: any;
+  rad: any = 25;
+  res:any;
+  m:boolean = false;
+  constructor(public canvas) {
+
+    this.track = new fabric.Path("m 100 100 c 0 -10 10 -10 10 0 l 0 17 c 0 10 10 10 10 0 l 0 -17 c 0 -10 10 -10 10 0 l 0 60 c 0 10 -10 10 -10 0 l 0 -17 c 0 -10 -10 -10 -10 0 l 0 17 c 0 10 -10 10 -10 0 l 0 -17 c 0 -10 -10 -10 -10 0 l 0 17 c 0 10 -10 10 -10 0 l 0 -60 c 0 -10 10 -10 10 0 l 0 17 c 0 10 10 10 10 0 l 0 -17"
+      , this.trackOptions);
+    this.trackDims.width = this.track.width * this.track.scaleX;
+    this.trackDims.height = this.track.height * this.track.scaleY;
+    this.trackDims.center.x = this.trackDims.left + this.trackDims.width / 2;
+    this.trackDims.center.y = this.trackDims.top + this.trackDims.height / 2;
+
+    this.knob = new fabric.Circle(
+      {
+        radius: this.rad,
+        fill: "blue",
+        stroke: "white",
+        left: this.trackDims.center.x - this.rad,
+        top: this.trackDims.center.y - this.rad,
+        perPixelTargetFind: true,
+        lockMovementX: false,
+        lockMovementY: false,
+        selectable: false,
+        evented : false
+      });
+  
+    this.canvas.add(this.track);
+    this.canvas.add(this.knob);
+    
+    this.res = Object.keys(this.paths).map((key) => this.paths[key]);
+    console.log(this.res);
+    // setTimeout(() => this.knob.selectable= false , 5000);
+    // this.knob.selectable = false;
+    this.knob.on("moving", (event) => {
+      var a = canvas.isTargetTransparent(this.track, event.e.clientX, event.e.clientY);
+      // console.log(a);
+      if(a) {
+        // console.log("false");
+        this.knob.selectable = false;
+        this.knob.evented = false;
+        this.canvas.discardActiveObject();
+      }
+      else {
+        // console.log("true")
+        this.knob.selectable = true;      
+      }
+      // console.log(this.knob.selectable);
+    });
+    this.track.on('mouseout' , ()=> {
+     console.log("out");
+    });
+    this.track.on('mousemove' , (event)=> {
+      var a = this.canvas.isTargetTransparent(this.track, event.e.x, event.e.y);
+      if(!a){
+        var ptr = this.canvas.getPointer(event.e);
+        this.knob.left = ptr.x - this.knob.radius;
+        this.knob.top = ptr.y- this.knob.radius;
+        this.canvas.renderAll();
+      }
+    });
+  }
+
+  public getRect(a){
+    var a = new fabric.Rect({
+      width: a.w,
+      height: a.h,
+      left: a.l,
+      top: a.t,
+      visible:false
+    });
+    this.canvas.add(a);
+    return a;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

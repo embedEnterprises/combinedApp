@@ -3,6 +3,8 @@ import { Pedal } from './Pedal';
 import { Renderer2, NgZone } from '@angular/core';
 import { Steering } from './steering';
 import { DeviceConfigurationService } from './../device-configuration.service';
+import { HealthBar } from './healthBar';
+import { GearShift } from './GearShift';
 
 declare function drawHello(speedometerValue, tachometerValue, gasValue, mileage, turnSignals, iconStates);
 declare function resizeSpeedometer(ct, w, h);
@@ -11,6 +13,9 @@ export class Dashboard{
 
   private steer;
   private pedals;
+  private healthBar;
+  // private gearShift;
+
   public resizeSpeedometer = resizeSpeedometer;
   public turn= {
     left : false,
@@ -45,10 +50,16 @@ export class Dashboard{
   constructor(private ctx: CanvasRenderingContext2D,
     private renderer2:Renderer2,
     private deviceConf : DeviceConfigurationService,
-    private ngZone:NgZone){
+    private ngZone:NgZone,
+    private document : any){
     this.steer = new Steering(ctx,renderer2,deviceConf, ngZone);
     this.pedals = new Pedal(ctx, renderer2,deviceConf);
+    this.healthBar = new HealthBar(this.ctx , renderer2);
+    // this.gearShift = new GearShift(this.ctx, renderer2, document);
     this.steer.calculatePos(this.ctx.canvas.width, this.ctx.canvas.height);
+    this.healthBar.calculatePos(this.ctx.canvas.width , this.ctx.canvas.height);
+    // this.gearShift.calculatePos(this.ctx.canvas.width, this.ctx.canvas.height);
+
     resizeSpeedometer(this.ctx, this.ctx.canvas.width , this.ctx.canvas.height);
     this.speed = 0;
   }
@@ -56,15 +67,20 @@ export class Dashboard{
   public calculatePos(x, y){
     this.steer.calculatePos(x,y);
     this.pedals.calculatePos(x,y);
+    this.healthBar.calculatePos(x,y);
+    // this.gearShift.calculatePos(x,y);
   }
   public isClicked(e){
     this.steer.isClicked(e);
     this.pedals.isClicked(e);
+    // this.gearShift.isClicked(e);
   }
 
   public update(){
     this.steer.update();
     this.pedals.update();
+    this.healthBar.draw();
+    // this.gearShift.draw();
     this.calculateSpeed();
     drawHello(this.speed/100, this.speed/100, 0.5, 100, this.turn, this.indicators);
   }
