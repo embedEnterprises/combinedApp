@@ -1,6 +1,11 @@
 import { NgModule, Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { TokenStorageService } from '../_services/token-storage.service';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import { SaveComponent } from '../save/save.component';
+import { FileOpenComponent } from '../file-open/file-open.component';
+
 import * as Blockly from 'blockly';
 import BlocklyJS from 'blockly/javascript';
 import { Observable } from 'rxjs';
@@ -11,7 +16,8 @@ import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+//   directives:[SaveComponent]
 })
 
 export class HeaderComponent implements OnInit {
@@ -19,50 +25,103 @@ export class HeaderComponent implements OnInit {
   server_address = "54.242.84.166"
   api_url = "https://8lfrlhnvcd.execute-api.us-east-1.amazonaws.com/test"
 
-  loading = false;
   loading_gif = false;
-  message = "hello"
+  acknowledgeButton = false;
 
+  message = "Loading";
+  isLoggedIn = false;
   closeResult = '';
+  OpenFileName = '';
+  file_opened = false;
+  file_opened_content: '';
+  message_dialog;
+
+  file_name: string;
+  name: string;
 
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-      console.log(this.closeResult)
-      console.log(content)
-
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  ngOnInit(): void {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
   }
 
 
-  close(data) {
-    console.log(data);
-//     var activeModal = new NgbActiveModal();
-//     activeModal.close(content);
+  openSaveModal() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '300px';
+    dialogConfig.data = {
+        id: 1,
+        title: 'Angular For Beginners'
+    };
+
+    const dialogRef = this.dialog.open(SaveComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        data => console.log("Dialog output:", data)
+    );
   }
 
 
+  openFileOpenModal() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '300px';
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+    const dialogRef = this.dialog.open(FileOpenComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        data => {
+          console.log("Dialog output:", data)
+          this.OpenFileName = data.file_name
+          this.file_opened = true;
+          this.file_opened_content = data.content;
+        }
+    );
+  }
+
+
+  new_file(){
+    var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+    var text = Blockly.Xml.domToText(xml);
+    if (text === this.file_opened_content){
+      console.log("Same")
+    }
+    else{
+      if(confirm("Do you want to save changes that you made to the file?")) {
+        this.save();
+        this.file_opened = false;
+        this.OpenFileName = '';
+        Blockly.mainWorkspace.clear();
+      }
+
     }
   }
 
-//   private activeModal: NgbActiveModal
-  constructor(private http: HttpClient, private modalService: NgbModal) { }
+
+  save(){
+    var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+    var text = Blockly.Xml.domToText(xml);
+    if (text === this.file_opened_content){
+      console.log("Same")
+    }
+    else{
+      console.log(text)
+      console.log(this.file_opened_content)
+      console.log("Diff")
+    }
+  }
+
+
+  constructor(
+    private http: HttpClient,
+    private modalService: NgbModal,
+    private tokenStorageService: TokenStorageService,
+    private dialog: MatDialog
+    ) { }
 
 
   get_default_code(): Observable<any> {
     this.message = "Loading Code..."
-    this.loading = true;
     this.loading_gif = true;
     return this.http.get("http://"+this.server_address+":8080/test", {responseType: 'blob'});
   }
@@ -70,66 +129,16 @@ export class HeaderComponent implements OnInit {
 
   get_compiled_code(data: any): Observable<any> {
     this.message = "Generating Code..."
-    this.loading = true;
     this.loading_gif = true;
     return this.http.post("http://"+this.server_address+":8080/compile", data, {responseType: 'blob'});
   }
 
 
-
-  save_file_cloud(){
-    var name ="blockly.txt";
-    var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
-    var text = Blockly.Xml.domToText(xml);
-    if (text.length === 0) {
-      window.alert("There is nothing to save");
-      return;
-    }
-    const body = {
-                file_data: text,
-                user_id: '000001',
-                file_name: 'my_first_code.txt'
-              }
-
-
-    this.http.post(this.api_url + "/save", body).subscribe(
-      res => {
-        console.log(res);
-      }
-    );
-    return;
-  }
-
-
-  open_file_cloud(){
-    const body = {
-                user_id: '000001',
-                file_name: 'my_first_code.txt'
-              }
-
-    this.http.post(this.api_url + "/load", body).subscribe(
-      res => {
-        console.log(res);
-        var dom = Blockly.Xml.textToDom(res['file_data'])
-        Blockly.Xml.clearWorkspaceAndLoadFromXml(dom, Blockly.getMainWorkspace())
-        console.log("success")
-        return
-      }
-    );
-
-    return;
-  }
-
-
-
-
   upload_code_ota(data: any): Observable<any> {
     this.message = "Uploading Code..."
-    this.loading = true;
     this.loading_gif = true;
     const headers= new HttpHeaders()
     headers.set('Content-Type', 'multipart/form-data');
-//     headers.set('Referer', 'http://192.168.140.58/serverIndex');
     headers.set('Accept', '*/*');
     headers.set('X-Requested-With', 'XMLHttpRequest');
 
@@ -137,13 +146,19 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  compile_and_upload(){
+  compile_and_upload(template){
     var generatedCode = BlocklyJS.workspaceToCode(Blockly.getMainWorkspace());
     const iformData = new FormData();
     iformData.append('raw_code', generatedCode);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '300px';
+    this.message_dialog = this.dialog.open(template, dialogConfig);
+
     this.get_compiled_code(iformData).subscribe(
       res => {
-        this.loading = false;
         console.log(res);
         const formData = new FormData();
         formData.append('update', new Blob([res], {type:"application/octet-stream"}));
@@ -151,68 +166,74 @@ export class HeaderComponent implements OnInit {
           res => {
             console.log(res);
             this.loading_gif = false;
-            this.loading = false;
-            alert("Code uploaded successfully")
+            this.message = "Code uploaded successfully!";
+            this.acknowledgeButton = true;
+          },
+          err => {
+            console.log(err);
+            this.loading_gif = false;
+            this.acknowledgeButton = true;
+            this.message = "Error Occurred, Please try again";
           }
         );
+      },
+      err => {
+        console.log(err);
+        this.loading_gif = false;
+        this.acknowledgeButton = true;
+        this.message = "Error Occurred, Please try again";
       }
     );
   }
 
 
-  upload_default(){
+  upload_default(template){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '300px';
+    this.message_dialog = this.dialog.open(template, dialogConfig);
+
     this.get_default_code().subscribe(
       res => {
-        console.log(res);
         const formData = new FormData();
         formData.append('update', new Blob([res], {type:"application/octet-stream"}));
         this.upload_code_ota(formData).subscribe(
           res => {
-            console.log(res);
             this.loading_gif = false;
-            this.loading = false;
-            alert("Code uploaded successfully")
+            this.message = "Code uploaded successfully!";
+            this.acknowledgeButton = true;
+          },
+          err => {
+            console.log(err);
+            this.loading_gif = false;
+            this.acknowledgeButton = true;
+            this.message = "Error Occurred, Please try again";
           }
         );
+      },
+      err => {
+        console.log(err);
+        this.loading_gif = false;
+        this.acknowledgeButton = true;
+        this.message = "Error Occurred, Please try again";
       }
     );
   }
 
 
+  closeErrorMessageModal(){
+    this.message_dialog.close();
+    this.acknowledgeButton = false;
+  }
 
-  save_local(){
-    var name ="blockly.txt";
-    var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
-    var text = Blockly.Xml.domToText(xml);
-    if (text.length === 0) {
-      window.alert("There is nothing to save");
-      return;
+  sign_out(){
+    if(confirm("Are you sure to Log Out")) {
+      this.tokenStorageService.signOut();
+      this.isLoggedIn = false;
     }
-    const blob = new Blob([text], { type: 'text/plain' });
-    saveAs(blob, "data.txt");
 
-    console.log("data");
-    console.log(text);
-    return;
-  }
-
-  load_local(){
-
-//     fetch('D:\Embed\Blockly\blockly-samples-master\examples\blockly-angular\src\assets\data.txt').then(response => response.text()).then(
-//       text =>{
-//         var dom = Blockly.Xml.textToDom(text)
-//         Blockly.Xml.clearWorkspaceAndLoadFromXml(dom, Blockly.getMainWorkspace())
-//       }
-//     )
-
-    var dom = Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"><block type="root" id="cr.S8sY?pgV2xm5r7Y|)" x="167" y="57"><statement name="setup"><block type="Run Car" id="+`.Z#H;.+ocx.~Rf4ZK+"><field name="direction">0</field><field name="Car Speed">50</field><next><block type="Run Car" id="m*AzeL@X=36p%xr|^yT#"><field name="direction">0</field><field name="Car Speed">50</field></block></next></block></statement><statement name="loop"><block type="While" id="w4*(Qegy^MvEhsk]K*{R"><field name="condition">==</field><field name="RHS">0</field><value name="LHS"><block type="IR VALUE" id="!(8;JumSIcM38f,U;Z_|"><field name="IR List">1</field></block></value><statement name="steps"><block type="Headlights" id="LOEBRDC5ob1!TvEhWSs;"><field name="value">1</field><next><block type="Headlights" id="P@VvnI@mEDLg6hWPvhf~"><field name="value">1</field></block></next></block></statement><next><block type="If" id="_}578LTj5(p/I:P?wHLW"><field name="condition">==</field><field name="RHS">0</field><value name="LHS"><block type="IR VALUE" id="2CY9;:Ne`QDT[ve,0Gtv"><field name="IR List">1</field></block></value><statement name="steps"><block type="Run Car" id="$~N1$+=d0h*cQOW,8AMP"><field name="direction">0</field><field name="Car Speed">100</field></block></statement><next><block type="If" id="IrNmL+fzdzU5vow4=cMe"><field name="condition">==</field><field name="RHS">0</field><value name="LHS"><block type="IR VALUE" id="5Zw7Cwjbey1;:~B]Xnuz"><field name="IR List">1</field></block></value><statement name="steps"><block type="Run Car" id="fWR@.nT1c7%k:3H^ORFb"><field name="direction">0</field><field name="Car Speed">100</field></block></statement><next><block type="Run Car" id="t]qqOw-H|FuZ9+xcWZIs"><field name="direction">0</field><field name="Car Speed">100</field><next><block type="delay_in_seconds" id="~|uq$YCAYJtR4AHTWYE_"><field name="delay_time">1</field><next><block type="Run Car" id="Z^MmLm{V30J6ut`yYn2i"><field name="direction">0</field><field name="Car Speed">0</field><next><block type="delay_in_seconds" id="*Gf^w6lr^ht]9]19(kz6"><field name="delay_time">1</field></block></next></block></next></block></next></block></next></block></next></block></next></block></statement></block></xml>')
-    Blockly.Xml.clearWorkspaceAndLoadFromXml(dom, Blockly.getMainWorkspace())
-    console.log("success")
-    return
-  }
-
-
-  ngOnInit(): void {
   }
 
 }

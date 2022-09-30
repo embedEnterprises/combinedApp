@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import * as Blockly from 'blockly';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
   selector: 'app-save',
@@ -14,7 +16,21 @@ export class SaveComponent implements OnInit {
 
   api_url = "https://8lfrlhnvcd.execute-api.us-east-1.amazonaws.com/test"
 
-  constructor(private http: HttpClient) { }
+  form: FormGroup;
+  filename:string;
+
+
+  constructor(
+  private http: HttpClient,
+  private fb: FormBuilder,
+  private dialogRef: MatDialogRef<SaveComponent>,
+  @Inject(MAT_DIALOG_DATA) data,
+  private tokenStorage: TokenStorageService
+  ) {
+    this.filename = data.filename;
+  }
+
+
   isDisabled = false;
   saveFile()
   {
@@ -27,9 +43,19 @@ export class SaveComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      filename: [this.filename, []],
+    });
   }
 
+  close(){
+    this.dialogRef.close(this.form.value);
+  }
 
+  save(){
+    console.log(this.form.value.filename);
+    this.dialogRef.close(this.form.value);
+  }
 
   save_file_cloud(){
     this.isDisabled = true;
@@ -41,8 +67,8 @@ export class SaveComponent implements OnInit {
     }
     const body = {
                 file_data: text,
-                user_id: '000001',
-                file_name: 'my_first_code.txt'
+                user_id: this.tokenStorage.getUser().username,
+                file_name: this.form.value.filename
               }
 
 
@@ -52,6 +78,7 @@ export class SaveComponent implements OnInit {
       }
     );
     this.isDisabled = false;
+    this.dialogRef.close(this.form.value);
     alert("File saved!")
     return;
   }
