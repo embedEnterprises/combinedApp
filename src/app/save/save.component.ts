@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import * as Blockly from 'blockly';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
@@ -16,13 +16,13 @@ export class SaveComponent implements OnInit {
 
   api_url = "https://8lfrlhnvcd.execute-api.us-east-1.amazonaws.com/test"
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   filename:string;
 
 
   constructor(
   private http: HttpClient,
-  private fb: FormBuilder,
+  private fb: UntypedFormBuilder,
   private dialogRef: MatDialogRef<SaveComponent>,
   @Inject(MAT_DIALOG_DATA) data,
   private tokenStorage: TokenStorageService

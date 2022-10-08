@@ -33,32 +33,31 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BlocklyComponent,
-    HeaderComponent,
-    SaveComponent,
-    FileOpenComponent,
-    SignInComponent,
-    RegisterComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgbModule,
-    RouterModule.forRoot(routes),
-    FormsModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatListModule
-  ],
-  providers: [authInterceptorProviders],
-  bootstrap: [AppComponent],
-  exports: [BlocklyComponent],
-  entryComponents:[SaveComponent]
+    declarations: [
+        AppComponent,
+        BlocklyComponent,
+        HeaderComponent,
+        SaveComponent,
+        FileOpenComponent,
+        SignInComponent,
+        RegisterComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        NgbModule,
+        RouterModule.forRoot(routes),
+        FormsModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatListModule
+    ],
+    providers: [authInterceptorProviders],
+    bootstrap: [AppComponent],
+    exports: [BlocklyComponent]
 })
 export class AppModule { }
