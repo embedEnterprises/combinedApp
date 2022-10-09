@@ -9,6 +9,7 @@
       <li><button mat-raised-button *ngIf="isLoggedIn" (click)="openFileOpenModal()">Open</button></li>
       <li><button mat-raised-button (click)="compile_and_upload(template)" id="UploadButton">Upload code</button></li>
       <li><button mat-raised-button (click)="upload_default(template)" id="UploadOButton">Upload Original code</button></li>
+      <li><button mat-raised-button [routerLink]="['/cruise']">Car Control</button></li>
       <li><a routerLink="/sign-in" *ngIf="!isLoggedIn">SignIn</a></li>
       <li><a routerLink="/register" *ngIf="!isLoggedIn">Register</a></li>
       <li><button mat-raised-button color="warn" (click)="sign_out()" *ngIf="isLoggedIn">SignOut</button></li>

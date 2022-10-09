@@ -20,16 +20,18 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
+import { CruiseComponent } from './cruise/cruise.component';
+import { DeviceConfigurationService } from './device-configuration.service';
 
 const routes: Routes = [
   { path: '', component: BlocklyComponent },
   { path: 'save', component: SaveComponent },
   { path: 'open', component: FileOpenComponent },
   { path: 'sign-in', component: SignInComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'cruise' , component: CruiseComponent}
 ]
 
 @NgModule({
@@ -56,7 +58,7 @@ const routes: Routes = [
         MatDialogModule,
         MatListModule
     ],
-    providers: [authInterceptorProviders],
+    providers: [authInterceptorProviders,DeviceConfigurationService],
     bootstrap: [AppComponent],
     exports: [BlocklyComponent]
 })

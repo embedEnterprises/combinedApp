@@ -34,7 +34,8 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/blocks/blocks.js",
+              "src/assets/speedometer.js",
+              "src/assets/fraction.min.js",
               "node_modules/blockly/javascript.js"
             ]
           },
@@ -120,6 +121,9 @@
           }
         }
       }
-    }},
-  "defaultProject": "blockly-angular-sample"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
 }
