@@ -24,7 +24,8 @@ export class FabricComponent implements OnInit {
     isDrawingMode:false,  //When true, mouse events on canvas (mousedown/mousemove/mouseup) result in free drawing.
     // width:window.innerWidth,
     // height:window.innerHeight
-    backgroundColor:"green"
+    backgroundColor:"green",
+    selection:false
   }
   constructor(private renderer2: Renderer2) { }
 
