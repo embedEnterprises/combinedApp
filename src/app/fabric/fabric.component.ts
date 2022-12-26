@@ -3,6 +3,7 @@ import { fabric } from 'fabric';
 import { Dashboard } from '../cruise/dashboard';
 import { DeviceConfigurationService } from '../device-configuration.service';
 import {Gears} from './gears';
+import { Steering } from './steering';
 
 @Component({
   selector: 'app-fabric',
@@ -27,12 +28,14 @@ export class FabricComponent implements OnInit {
     backgroundColor:"green",
     selection:false
   }
+  steering: Steering;
   constructor(private renderer2: Renderer2) { }
 
   ngOnInit(): void {
     this.canvas = new fabric.Canvas('canvas', this.canvasOptions);
     this.setCanvasDimensions();
     this.gears = new Gears(this.canvas);
+    this.steering = new Steering(this.canvas);
   }
 
   private setCanvasDimensions(){
