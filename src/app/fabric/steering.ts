@@ -1,16 +1,16 @@
 import { fabric } from 'fabric';
-
+// import {eventjs} from '../../assets/fabric'
 export class Steering {
   steering: any;
   rotationPerDegree: number = 8.5;
   dir = true;
   stopAnimation = false
   steerOptions: any = {
-    left: 580,
-    top: 700,
-    scaleX: 5,
-    scaleY: 5,
-    perPixelTargetFind: true,
+    left: 1280,
+    top: 600,
+    scaleX: 3,
+    scaleY: 3,
+    perPixelTargetFind: false,
     selectable: false,
     evented: true,
     centeredRotation: true,

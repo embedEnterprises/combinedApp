@@ -1,5 +1,7 @@
 import { fabric } from 'fabric';
 
+declare var eventjs:any
+
 export class Gears {
   trackBack: any;
   track: any;
@@ -19,8 +21,8 @@ export class Gears {
     top: 200,
     left: 400,
     perPixelTargetFind: true,
-    scaleX: 5,
-    scaleY: 4,
+    scaleX: 10,
+    scaleY: 8,
     height: 75,
     width: 50,
     selectable: false,
@@ -99,6 +101,17 @@ export class Gears {
 
   constructor(public canvas) {
     this.track = new fabric.Path(this.trackPath, this.trackOptions);
+    console.log(fabric.isTouchSupported)
+    this.canvas.on("touch:gesture", function(event, self) {
+      console.log(
+        self.x, // centroid
+        self.y,
+        self.rotation,
+        self.scale,
+        self.fingers,
+        self.state
+      );
+    });
     var group = [];
     canvas.add(this.track);
     fabric.loadSVGFromURL("assets/gear_knob.svg", (objects, options) => {
@@ -112,13 +125,18 @@ export class Gears {
       object.set('id', item.getAttribute('id'));
       group.push(object);
     });
-    this.track.on('mousedown', (event) => {
-      if (this.knob.containsPoint(this.canvas.getPointer(event.e))) {
+    this.track.on('touchdown', (event) => {
+      console.log(event.e.touches.length)
+      // console.log(this.knob.getCoords())
+      // console.log(this.canvas.getPointer(event.e))
+      // console.log(this.knob.containsPoint(this.canvas.getPointer(event.e)))   
+      // console.log(this.knob.containsPoint({x:event.e.pageX, y:event.e.pageY})) 
+      if (this.knob.containsPoint({x:event.e.pageX, y:event.e.pageY})) {
         this.track.on('mousemove', (event) => {
           if (!canvas.isTargetTransparent(this.track, event.e.x, event.e.y)) {
             let ptr = this.canvas.getPointer(event.e)
             let m = Object.keys(this.paths).find((key) => {
-              return this.paths[key].containsPoint(ptr);
+              return this.paths[key].containsPoint({x:event.e.pageX, y:event.e.pageY});
             })
             if (m != undefined) {
               let a = this.paths[m].getCenterPoint();
@@ -131,12 +149,17 @@ export class Gears {
           }
         }
         )
+
+        canvas.on('mouse:up', (event) => {
+          console.log(event)
+          this.knob.setCoords();
+          this.track.off('mousemove')
+          this.canvas.off("mouse:up");
+          console.log("mouse is up")
+        })
       }
     });
-    canvas.on('mouse:up', (event) => {
-      this.knob.setCoords();
-      this.track.off('mousemove')
-    })
+   
   }
 
   public getRect(a) {
