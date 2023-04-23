@@ -1,39 +1,39 @@
 import Phaser from "phaser";
+import { scaleToGameW, scaleToGameZone, setPos } from "../utils";
 
 export default class Break extends Phaser.GameObjects.Mesh {
 
   debug;
   zone;
   ptrId;
-  constructor (scene , x,y,zx,zy){
-    super(scene, x, y , 'break',);
+  constructor (scene, conf){
+    super(scene, conf.x, conf.y , 'break',);
     Phaser.Geom.Mesh.GenerateGridVerts({
       texture : 'break',
       mesh: this,
       widthSegments : 6,
-      
     });
-    this.scene.add.existing(this)
-    this.scaleToGameW(this , 0.15);
-    this.setPos(this,x,y);
-    
+    this.scene.add.existing(this);
+    this.scaleToGameW(this , conf.w);
+    setPos(scene, this, conf.x, conf.y);
+
     this.zone= this.scene.add.zone(this.x , this.y , this.displayWidth,this.displayHeight).setOrigin(0)
                 .setInteractive();
-    this.scaleToGameZone(0.10 , 0.45)
-    this.setPos(this.zone, zx, zy)
-    var graphics = this.scene.add.graphics();
-    graphics.lineStyle(7, 0xffff00);
-    graphics.strokeRect(this.zone.x , this.zone.y, this.zone.displayWidth, this.zone.displayHeight);
-    this.zone.on('pointerdown', this.handlePointerDown , this);
+    scaleToGameZone(scene, this.zone, conf.zw, conf.zh)
+    setPos(scene, this.zone, conf.zx, conf.zy)
 
-  
+    this.zone.on('pointerdown', this.handlePointerDown , this);
   }
 
   private handlePointerDown(e) {
     this.ptrId = e.id;
-    this.zone.on('pointermove' , this.handlePointeMove, this);
+    this.scene.input.on('pointermove' , this.handlePointerMove, this);
+    this.scene.input.on('pointerup' , this.handlePointerUp, this);
+
   }
-  private handlePointeMove(e) {
+
+  
+  private handlePointerMove(e) {
     if(this.ptrId == e.id) {
       const rotateRate = 1,
       xuplim = 1,
@@ -48,7 +48,8 @@ export default class Break extends Phaser.GameObjects.Mesh {
   }
   private handlePointerUp(e) {
     if (this.ptrId == e.id) {
-      this.zone.off('pointermove')
+      this.scene.input.off('pointermove')
+      this.scene.input.off('pointerup')
       this.ptrId == null;
     }
   }
@@ -60,11 +61,11 @@ export default class Break extends Phaser.GameObjects.Mesh {
     var q = 2.5*Number(this.scene.sys.game.config.width) / 915;
     obj.panZ(q);
   }
-  public scaleToGameZone(perW , perH) {
-    this.zone.displayWidth = Number(this.scene.sys.game.config.width) * perW;
-    this.zone.displayHeight = Number(this.scene.sys.game.config.height) * perH;
-  }
-  setPos(obj, x: number, y: number) {
-    obj.setPosition(Number(this.scene.sys.game.config.width) * x, Number(this.scene.sys.game.config.height) * y);
-  }
+  // public scaleToGameZone(perW , perH) {
+  //   this.zone.displayWidth = Number(this.scene.sys.game.config.width) * perW;
+  //   this.zone.displayHeight = Number(this.scene.sys.game.config.height) * perH;
+  // }
+  // setPos(obj, x: number, y: number) {
+  //   obj.setPosition(Number(this.scene.sys.game.config.width) * x, Number(this.scene.sys.game.config.height) * y);
+  // }
 }

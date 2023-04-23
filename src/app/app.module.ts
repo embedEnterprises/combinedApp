@@ -20,11 +20,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
-import { CruiseComponent } from './cruise/cruise.component';
 import { DeviceConfigurationService } from './device-configuration.service';
-import { FabricComponent } from './fabric/fabric.component';
 import { PhaserComponent } from './phaser/phaser.component';
 
 const routes: Routes = [
@@ -33,9 +30,8 @@ const routes: Routes = [
   { path: 'open', component: FileOpenComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'cruise' , component: CruiseComponent},
-  {path:'fabric', component:FabricComponent},
-  {path:'phaser' , component:PhaserComponent}
+  {path:'phaser' , component:PhaserComponent},
+
 ]
 
 @NgModule({
@@ -46,9 +42,8 @@ const routes: Routes = [
         SaveComponent,
         FileOpenComponent,
         SignInComponent,
-        RegisterComponent,
-        FabricComponent,
-         PhaserComponent
+         PhaserComponent,
+         RegisterComponent,
     ],
     imports: [
         BrowserModule,
