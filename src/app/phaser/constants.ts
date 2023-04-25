@@ -30,3 +30,9 @@ export const steer = {
   w: 0.3
 }
 
+export const dialConf = {
+  x: 0.4,
+  y: 0.4,
+  w: 0.22
+}
+

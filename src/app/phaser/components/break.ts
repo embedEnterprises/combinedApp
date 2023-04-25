@@ -29,12 +29,13 @@ export default class Break extends Phaser.GameObjects.Mesh {
     this.ptrId = e.id;
     this.scene.input.on('pointermove' , this.handlePointerMove, this);
     this.scene.input.on('pointerup' , this.handlePointerUp, this);
-
+    console.log("hello")
   }
 
   
   private handlePointerMove(e) {
     if(this.ptrId == e.id) {
+      console.log("there")
       const rotateRate = 1,
       xuplim = 1,
       xlowlim = 0

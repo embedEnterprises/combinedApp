@@ -56,7 +56,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
       scene,
       0,
       0,
-      this.radius + 90,
+      this.radius + 40,
       this.startAngle,
       this.endAngle,
       false
@@ -114,13 +114,14 @@ export class Speedometer extends Phaser.GameObjects.Container {
       this.numberCircle,
       // this.endCircle,
       this.externalArc,
-      // this.smallInternalArc,
+      this.smallInternalArc,
       this.speedText,
       this.speedText1,
       this.graphics,
       this.graphics1,
     ]);
     this.setScale(0.5);
+
     this.smallInternalArc.setStrokeStyle(7, 0xa2a2a2, 1);
 
     //Draw numbers and ticks
@@ -161,8 +162,9 @@ export class Speedometer extends Phaser.GameObjects.Container {
       rect.setAngle(angle);
       rect.depth = 1;
       angle += this.angleInterval1;
-      this.endCircle.setPosition(point2.x, point2.y);
+      // this.endCircle.setPosition(point2.x, point2.y);
     }
+
 
     var tween = this.scene.tweens.addCounter({
       from: 0,
@@ -181,21 +183,21 @@ export class Speedometer extends Phaser.GameObjects.Container {
         this.graphics.lineStyle(15, 0xff9401, 1);
         this.graphics.beginPath();
         this.graphics.arc(
-          0,
-          0,
-          this.radius + 40,
-          Phaser.Math.DegToRad(this.startAngle),
+          this.externalArc.x,
+          this.externalArc.y,
+          this.externalArc.radius,
+          Phaser.Math.DegToRad(this.externalArc.startAngle),
           Phaser.Math.DegToRad(endAngle),
           false
         );
         this.graphics.strokePath();
-
-        let point = this.getPointOnArc(this.ticksCircle, endAngle);
-        console.log(point.x, point.y)
-        // this.endCircle.setPosition(this.x-point.x, this.y-point.y);
+        let point = this.getPointOnArc(this.externalArc, endAngle);
+        // console.log(point.x, point.y)
+        // this.endCircle.setPosition(point.x - this.x, point.y - this.y);
       },
     });
     tween.resume();
+
     //Draw external arc
     scene.add.existing(this);
   }

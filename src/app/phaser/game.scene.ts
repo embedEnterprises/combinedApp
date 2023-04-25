@@ -3,17 +3,9 @@ import * as Phaser from "phaser";
 import Break from "./components/break";
 import Steer from "./components/steer";
 import { Gears } from "./components/gears";
-import { breakConf, gasConf } from "./constants";
+import { breakConf, gasConf, dialConf } from "./constants";
 import { Speedometer } from "./components/speedometer";
-import { LedKnob } from './components/ledKnob';
-
-var x = 100;
-var y = 100;
-var speed = 2;
-
-var bmd;
-var innerCircle;
-var outerCircle;
+import { Dial } from "./components/dial";
 
 @Injectable()
 export class GameScene extends Phaser.Scene {
@@ -22,13 +14,8 @@ export class GameScene extends Phaser.Scene {
   private gas: Break;
   private gears: Gears;
   private speedometer: Speedometer;
-  private ledKnob: LedKnob;
-  graphics;
-  ctx;
-  gradient;
-  texture;
-  circle: HTMLCanvasElement;
-  circleImage: Phaser.GameObjects.Image;
+  private ledKnob: Dial;
+
   constructor() {
     super({ key: "GameScene" });
   }
@@ -52,14 +39,11 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     this.steer = new Steer(this, 'steeringWheel');
-    // this.gas = new Break(this, gasConf);
-    // this.break = new Break(this, breakConf);
-    // this.gears = new Gears(this, 500, 100).setScale(0.8);
+    this.gas = new Break(this, gasConf);
+    this.break = new Break(this, breakConf);
+    this.gears = new Gears(this, 500, 100).setScale(0.8);
     this.speedometer = new Speedometer(this, 935, 700);
-    // this.speedometer.setScale(0.65);
-    this.ledKnob = new LedKnob(this, 300, 200);
-    this.ledKnob.setScale(2);
-
+    this.ledKnob = new Dial(this, dialConf);
   }
 
 }

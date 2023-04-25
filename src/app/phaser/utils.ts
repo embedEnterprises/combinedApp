@@ -2,6 +2,10 @@ export function scaleToGameW(scene , obj, per) {
   obj.displayWidth = Number(scene.sys.game.config.width) * per;
   obj.scaleY = obj.scaleX;
 }
+export function scaleToGameR(scene , obj, per) {
+  obj.radius = Number(scene.sys.game.config.width) * per;
+  obj.scaleY = obj.scaleX;
+}
 export function setPos(scene ,obj , x: number, y: number) {
   obj.setPosition(Number(scene.sys.game.config.width) * x, Number(scene.sys.game.config.height) * y);
 }
