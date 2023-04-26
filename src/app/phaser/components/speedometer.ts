@@ -1,3 +1,5 @@
+import  * as utils  from './../utils';
+
 export class Speedometer extends Phaser.GameObjects.Container {
   public graphics;
   interval = 20;
@@ -27,11 +29,13 @@ export class Speedometer extends Phaser.GameObjects.Container {
     w: 20,
     h: 6,
   };
+
   speedText: Phaser.GameObjects.Text;
   speedText1: Phaser.GameObjects.Text;
   endCircle: Phaser.GameObjects.Arc;
-  constructor(scene, x, y) {
-    super(scene, x, y);
+
+  constructor(scene, config) {
+    super(scene, 0, 0);
     this.graphics = scene.add.graphics();
     this.graphics1 = scene.add.graphics();
     this.ticksCircle = new Phaser.GameObjects.Arc(
@@ -120,7 +124,8 @@ export class Speedometer extends Phaser.GameObjects.Container {
       this.graphics,
       this.graphics1,
     ]);
-    this.setScale(0.5);
+
+    utils.scaleToGameContainer(scene, this, this.externalArc, config)
 
     this.smallInternalArc.setStrokeStyle(7, 0xa2a2a2, 1);
 
@@ -164,8 +169,6 @@ export class Speedometer extends Phaser.GameObjects.Container {
       angle += this.angleInterval1;
       // this.endCircle.setPosition(point2.x, point2.y);
     }
-
-
     var tween = this.scene.tweens.addCounter({
       from: 0,
       to: this.maxSpeed,
@@ -197,8 +200,6 @@ export class Speedometer extends Phaser.GameObjects.Container {
       },
     });
     tween.resume();
-
-    //Draw external arc
     scene.add.existing(this);
   }
 

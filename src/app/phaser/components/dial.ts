@@ -3,7 +3,7 @@ import * as Phaser from "phaser";
 
 export class Dial extends Phaser.GameObjects.Container {
   externalArc;
-  radius = 70;
+  radius = 55;
   startAngle = 180;
   endAngle = 360;
   noOfTicks = 6;
@@ -20,9 +20,14 @@ export class Dial extends Phaser.GameObjects.Container {
   angleInterval = (this.endAngle - this.startAngle) / (this.noOfTicks - 1);
   tween;
   intervalId;
-  constructor(scene, dialConf) {
-    super(scene, 500,400);
-    this.sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "dial");
+  constructor(scene, config) {
+    super(scene, 0, 0);
+    this.sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "dial")
+      .setOrigin(0.5, 0.48)
+      .setInteractive()
+      .setAngle(this.ang)
+      .setScale(0.7)
+      .on("pointerdown", this.onPointerDown);
     this.externalArc = new Phaser.GameObjects.Arc(
       scene,
       0,
@@ -32,25 +37,16 @@ export class Dial extends Phaser.GameObjects.Container {
       this.endAngle,
       false
     );
-    // this.externalArc.setStrokeStyle(7, 0xa2a2a2, 1);
 
-    this.add([this.sprite, this.externalArc]);
-
-    this.sprite
-    .setOrigin(0.48, 0.48)
-    .setInteractive()
-    .setAngle(this.ang)
-    .on("pointerdown", this.onPointerDown);
     this.drawTicks();
-    // this.setScale(2.5);
-    // this.createTwin();
 
-    utils.scaleToGameR(scene, this.externalArc, dialConf.w);
-    utils.scaleToGameW(scene, this.sprite, dialConf.w);
-    console.log(this.displayWidth);
-    this.width = 350;
-    console.log(this.width);
+    utils.scaleToGameContainer(scene, this, this.sprite, config);
+    this.add([this.sprite, this.externalArc]);
     scene.add.existing(this);
+  }
+
+  setCustomScale(factor) {
+    this.setScale(this.scale*factor)
   }
 
   drawTicks() {
@@ -61,7 +57,7 @@ export class Dial extends Phaser.GameObjects.Container {
         point.y,
         this.smallTick.w,
         this.smallTick.h,
-        0x6e6e6e
+        0xc9c9c9
       );
       rect.setOrigin(0.5, 0.5);
       rect.setAngle(i);
