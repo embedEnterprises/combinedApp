@@ -1,12 +1,12 @@
 import * as Phaser from 'phaser';
-import { gears as config }  from '../constants';
+// import { gears as config }  from '../constants';
 import * as utils from "../utils";
 
 export class Gears extends Phaser.GameObjects.Container {
   knob;
   gear;
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, );
+  constructor(scene: Phaser.Scene, config) {
+    super(scene, config.x, config.y, );
     const gearWidth    = 46,
           gearHeight   = 295,
           gearCount    = 3,

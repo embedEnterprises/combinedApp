@@ -37,10 +37,6 @@
             "scripts": [
               "src/assets/speedometer.js",
               "src/assets/fraction.min.js",
-              "node_modules/blockly/javascript.js",
-              "src/assets/fabric_with_touch.js",
-              "src/assets/pointer.js",
-              "src/assets/fabric.js",
               "node_modules/phaser/dist/phaser.min.js"
             ]
           },

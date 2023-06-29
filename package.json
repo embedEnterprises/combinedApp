@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/architect": "^0.1601.1",
     "@angular/animations": "~14.2.5",
     "@angular/cdk": "^13.3.9",
     "@angular/common": "~14.2.5",
@@ -23,7 +24,9 @@
     "@angular/material": "^13.3.9",
     "@angular/platform-browser": "~14.2.5",
     "@angular/platform-browser-dynamic": "~14.2.5",
+    "@angular/pwa": "^0.5.13",
     "@angular/router": "~14.2.5",
+    "@angular/service-worker": "^16.0.3",
     "@ng-bootstrap/ng-bootstrap": "^12.1.2",
     "@popperjs/core": "^2.10.2",
     "blockly": "^3.20200123.1",

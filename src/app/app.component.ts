@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import 'src/blocks/blocks'
 
 
 @Component({

@@ -3,7 +3,7 @@ import * as Phaser from "phaser";
 import Break from "./components/break";
 import Steer from "./components/steer";
 import { Gears } from "./components/gears";
-import { breakConf, gasConf, dialConf, speedometerConf } from "./constants";
+import { breakConf, gasConf, dialConf, speedometerConf, gearsConf } from "./constants";
 import { Speedometer } from "./components/speedometer";
 import { Dial } from "./components/dial";
 
@@ -41,7 +41,7 @@ export class GameScene extends Phaser.Scene {
     this.steer = new Steer(this, 'steeringWheel');
     this.gas = new Break(this, gasConf);
     this.break = new Break(this, breakConf);
-    this.gears = new Gears(this, 500, 100).setScale(0.8);
+    this.gears = new Gears(this, gearsConf);
     this.speedometer = new Speedometer(this, speedometerConf);
     this.ledKnob = new Dial(this, dialConf);
   }

@@ -1,7 +1,7 @@
-export const gears = {
-  x: 0.37, 
+export const gearsConf = {
+  x: 0.42, 
   y: 0.08,
-  scale: 0.8
+  scale: 0.5
 }
 
 export const breakConf = {
