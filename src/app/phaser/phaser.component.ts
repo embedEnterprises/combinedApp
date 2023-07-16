@@ -20,6 +20,7 @@ export class PhaserComponent implements OnInit {
       parent: 'game',
       // width: 1200,
       // height: 600,
+      transparent: true,
       scene: GameScene,
       backgroundColor: "#0000FF",
       scale: {
