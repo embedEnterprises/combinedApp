@@ -1,4 +1,4 @@
-import  * as utils  from './../utils';
+import * as utils from "./../utils";
 
 export class Speedometer extends Phaser.GameObjects.Container {
   public graphics;
@@ -75,17 +75,17 @@ export class Speedometer extends Phaser.GameObjects.Container {
       false
     );
     this.speedText = new Phaser.GameObjects.Text(scene, -20, 0, "136", {
-      fontFamily: "Segoe UI",
+      fontFamily: "digitBold",
       fontSize: "124px",
-      color: "#e9e9e9",
-      fontStyle: "bold",
+      color: "#ffffff",
     });
-    this.speedText1 = new Phaser.GameObjects.Text(scene, 135, 20, "kmh", {
-      fontFamily: "Arial",
+    this.speedText1 = new Phaser.GameObjects.Text(scene, 145, 20, "kmh", {
+      fontFamily: "digitalPlayBold",
       fontSize: "34px",
-      color: "#ff9401",
+      color: "#ffffff",
       fontStyle: "bold",
     });
+    this.speedText.setShadow(7,7,'#0b0b0bd1',0.8);
     this.speedText.setOrigin(0.5);
     this.speedText1.setOrigin(0.5);
 
@@ -116,7 +116,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
     this.add([
       this.ticksCircle,
       this.numberCircle,
-      // this.endCircle,
+      this.endCircle,
       this.externalArc,
       this.smallInternalArc,
       this.speedText,
@@ -125,7 +125,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
       this.graphics1,
     ]);
 
-    utils.scaleToGameContainer(scene, this, this.externalArc, config)
+    utils.scaleToGameContainer(scene, this, this.externalArc, config);
 
     this.smallInternalArc.setStrokeStyle(7, 0xa2a2a2, 1);
 
@@ -134,6 +134,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
     for (let i = 0; i <= this.maxSpeed; i += this.interval) {
       let point = this.getPointOnArc(this.numberCircle, angle);
       let text = this.scene.add.text(point.x, point.y, i.toString(), {
+        fontFamily:"frozen-crystal",
         fontSize: "20px",
         color: "#ffffff",
       });
@@ -167,7 +168,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
       rect.setAngle(angle);
       rect.depth = 1;
       angle += this.angleInterval1;
-      // this.endCircle.setPosition(point2.x, point2.y);
+      this.endCircle.setPosition(point2.x, point2.y);
     }
     var tween = this.scene.tweens.addCounter({
       from: 0,
@@ -179,7 +180,8 @@ export class Speedometer extends Phaser.GameObjects.Container {
       ease: Phaser.Math.Easing.Linear,
       onUpdate: (val) => {
         this.speed = val.getValue();
-        let endAngle = this.startAngle +
+        let endAngle =
+          this.startAngle +
           ((this.endAngle - this.startAngle) * this.speed) / this.maxSpeed;
         // this.speedText.setText(Math.round(this.speed).toString());
         this.graphics.clear();
@@ -196,7 +198,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
         this.graphics.strokePath();
         let point = this.getPointOnArc(this.externalArc, endAngle);
         // console.log(point.x, point.y)
-        // this.endCircle.setPosition(point.x - this.x, point.y - this.y);
+        this.endCircle.setPosition(point.x - this.x, point.y - this.y);
       },
     });
     tween.resume();

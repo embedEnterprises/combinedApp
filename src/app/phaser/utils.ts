@@ -29,6 +29,6 @@ export const scaleToGameContainer = (scene, obj, refObj, config) => {
   let prev = refObj.scale;
   scaleToGameW(scene, refObj, config.w);
   let after = refObj.scale;
-  refObj.setScale(prev)
+  refObj.setScale(prev);
   obj.setScale(after / prev);
 }

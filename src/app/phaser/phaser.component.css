@@ -1,0 +1,8 @@
+@font-face {
+  font-family: digitBold;
+  src: url('../../assets/fonts/RadioLand.ttf') format('truetype');
+}
+@font-face {
+  font-family: digitalPlayBold;
+  src: url('../../assets/fonts/digital-play-st/Digital_Play_St.ttf') format('truetype');
+}

@@ -1,27 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>BlocklyAngularSample</title>
-  <base href="/">
+  <head>
+    <meta charset="utf-8" />
+    <title>BlocklyAngularSample</title>
+    <base href="/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <script src="https://cdn.jsdelivr.net/gh/Kaiido/roundRect@main/roundRect.js"></script>
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"> -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="assets/phaser.min.js"></script>
-  <script>
-    if (global === undefined) {
-      var global = window;
-    }
-  </script>
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#1976d2">
-</head>
-<body class="mat-typography">
-  <app-root></app-root>
-  <noscript>Please enable JavaScript to continue using this application.</noscript>
-</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <script src="https://cdn.jsdelivr.net/gh/Kaiido/roundRect@main/roundRect.js"></script>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"> -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      href="assets/fonts/RadioLand.ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      href="assets/fonts/frozen-crystal/frozencrystal.ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      href="assets/fonts/digital-play-st/Digital_Play_St.ttf"
+      crossorigin
+    />
+    <!-- <link rel="preload" as="font" href="../../assets/fonts/RadioLand.ttf" type="font/ttf" /> -->
+    <script src="assets/phaser.min.js"></script>
+    <script>
+      if (global === undefined) {
+        var global = window;
+      }
+    </script>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1976d2" />
+  </head>
+  <body class="mat-typography">
+    <div style="font-family:digitBold; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <div style="font-family:digitalPlayBold; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <div style="font-family:frozen-crystal; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <app-root></app-root>
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
+  </body>
 </html>

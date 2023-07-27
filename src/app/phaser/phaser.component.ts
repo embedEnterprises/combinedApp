@@ -31,12 +31,12 @@ export class PhaserComponent implements OnInit {
         height: window.innerHeight
       },
       input: {
-        activePointers: 2,
+        activePointers: 3,
 
       },
       physics:{
         default:'matter'
-      }
+      },
     });
     this.game.input.addPointer(3);
 
