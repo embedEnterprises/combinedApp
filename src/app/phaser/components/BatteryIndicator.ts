@@ -1,37 +1,82 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
+import * as utils from "../utils";
 
 export class BatteryIndicator extends Phaser.GameObjects.Container {
-  constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, percentage: number) {
-    super(scene, x, y);
+  graphics;
+  spacing;
+  barW;
+  barH;
+  barX;
+  barY;
+  barRadius;
+  barCount;
+  constructor(scene: Phaser.Scene, config) {
+    super(scene, 0, 0); // Corrected the positioning
 
-    const numBars = 5;
-    const barWidth = 15;
-    const barHeight = 20;
-    const spacing = 50;
+    const lightingIcon = new Phaser.GameObjects.Image(
+      scene,
+      0,
+      0,
+      "lightingIcon"
+    )
+      .setOrigin(0)
+      .setScale(0.3, 0.2);
+    // lightingIcon.preFX.addShadow();s
+    this.spacing = 20;
+    this.barW = 70;
+    this.barH = lightingIcon.displayHeight;
+    this.barX = lightingIcon.displayWidth + 5;
+    this.barY = 0;
+    this.barRadius = 10;
+    this.barCount = 5;
 
-    // Add the lighting icon on the left side of the bars
-    const lightingIcon = scene.add.image(0, 0, 'lightingIcon'); // Replace 'lightingIcon' with your asset key
-    lightingIcon.setScale(0.2);
-    this.add(lightingIcon);
+    this.graphics = scene.add.graphics();
+    //set fill style to green color
+    this.graphics.fillStyle(0x00ff00, 1);
+    for (let i = 0; i < this.barCount; i++) {
+      const bar = this.graphics.fillRoundedRect(
+        this.barX + i * (this.barW + this.spacing),
+        this.barY,
+        this.barW,
+        this.barH,
+        this.barRadius
+      );
 
-    // Add the battery bars with round corners
-    for (let i = 0; i < numBars; i++) {
-      const barX = i * barWidth + lightingIcon.displayWidth + spacing; // Align bars to the right of the icon
-      console.log("i=" + i + " barX = " + barX);
-      const bar = this.scene.add.graphics({ x: barX, y: 0 });
-      bar.fillStyle(0xffffff); // Set the color of the bars, you can adjust this as needed
-      bar.fillRoundedRect(0, 0, barWidth, barHeight, 5); // Use the height to round the corners
-      this.add(bar);
+      this.add([bar]);
     }
-
-    // Implement logic to update the percentage
-    this.updatePercentage(percentage);
+    this.add([lightingIcon]);
+    utils.scaleToGameContainer(scene, this, lightingIcon, config);
     scene.add.existing(this);
   }
 
-  private updatePercentage(percentage: number) {
-    // Implement logic to update the bars based on the percentage
-    // You can fill the bars partially based on the percentage
-    // For example, if the percentage is 50, fill 5 out of 10 bars, etc.
-  }
+  update = (percentage: number) => {
+    this.graphics.clear();
+    // get the number of bar according to percentage
+    const barCount1 = Math.ceil((percentage * 5) / 100);
+    //orange color
+    // set fill style to three different colors, green for 5, yellow for 3 and red for 1
+    if (barCount1 > 3) {
+      this.graphics.fillStyle(0x00ff00, 1);
+    } else if (barCount1 > 1) {
+      this.graphics.fillStyle(0xffa500, 1);
+      // this.graphics.fillStyle(0xffff00, 1);
+    } else {
+      this.graphics.fillStyle(0xff0000, 1);
+    }
+
+    // draw the bar
+    for (let i = 0; i < this.barCount; i++) {
+      if (i + 1 > barCount1) {
+        this.graphics.fillStyle(0x000000, 0.3);
+      }
+      const bar = this.graphics.fillRoundedRect(
+        this.barX + i * (this.barW + this.spacing),
+        this.barY,
+        this.barW,
+        this.barH,
+        this.barRadius
+      );
+      this.add([bar]);
+    }
+  };
 }

@@ -1,4 +1,3 @@
-import { BehaviorSubject } from "rxjs";
 import * as utils from "../utils";
 
 export class GearShifter extends Phaser.GameObjects.Container {
