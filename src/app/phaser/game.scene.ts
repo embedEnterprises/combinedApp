@@ -9,6 +9,9 @@ import {
   dialConf,
   speedometerConf,
   gearsConf,
+  gearShifterConf,
+  batteryIndicatorConf,
+
 } from "./constants";
 import { Speedometer } from "./components/speedometer";
 import { Dial } from "./components/dial";
@@ -61,8 +64,8 @@ export class GameScene extends Phaser.Scene {
     // this.gears = new Gears(this, gearsConf);
     this.speedometer = new Speedometer(this, speedometerConf);
     this.ledKnob = new Dial(this, dialConf);
-    this.batteryIndicator = new BatteryIndicator(this,{ x: 0.4, y: 0.025, w: 0.04 });
-    this.gearShifter = new GearShifter(this, { x: 0.9, y: 0.025, w: 0.05 });
+    this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
+    this.gearShifter = new GearShifter(this, gearShifterConf);
 
   }
 }
