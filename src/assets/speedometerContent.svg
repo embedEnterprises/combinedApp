@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-52.182 42.346 570.351 402.837" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="73.752" y1="327.015" x2="73.752" y2="462.521" id="gradient-0" gradientTransform="matrix(1, 0, 0, 1, -15.451767, -19.018356)">
+      <stop offset="0" style="stop-color: rgba(223, 231, 255, 0);"/>
+      <stop offset="0.203" style="stop-color: rgba(172, 181, 224, 0.13);"/>
+      <stop offset="0.767" style="stop-color: rgb(42, 51, 150);"/>
+      <stop offset="1" style="stop-color: rgb(15, 0, 88);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="137.733" y1="311.332" x2="137.733" y2="457.003" id="gradient-2" gradientTransform="matrix(1, 0, 0, 1, 0, 0)">
+      <stop offset="0" style="stop-color: rgba(79, 85, 255, 0);"/>
+      <stop offset="0.218" style="stop-color: rgb(98, 103, 251);"/>
+      <stop offset="0.447" style="stop-color: rgb(181, 175, 175);"/>
+      <stop offset="0.771" style="stop-color: rgb(97, 102, 247);"/>
+      <stop offset="0.952" style="stop-color: rgb(131, 134, 242);"/>
+      <stop offset="1" style="stop-color: rgba(114, 119, 255, 0.1);"/>
+    </linearGradient>
+    <filter id="motion-blur-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 2 horizontal">
+      <feGaussianBlur stdDeviation="2 0" edgeMode="none"/>
+    </filter>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="90.628" y1="399.688" x2="90.628" y2="456.536" id="gradient-6">
+      <stop offset="0" style="stop-color: rgba(16, 24, 185, 1)"/>
+      <stop offset="0.874" style="stop-color: rgb(9, 13, 101);"/>
+      <stop offset="1" style="stop-color: rgba(8, 12, 91, 0);"/>
+    </linearGradient>
+    <filter id="motion-blur-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 2 horizontal">
+      <feGaussianBlur stdDeviation="2 0" edgeMode="none"/>
+    </filter>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="137.733" y1="311.332" x2="137.733" y2="457.003" id="gradient-7" gradientTransform="matrix(1, 0, 0, 1, 0, 0)">
+      <stop offset="0" style="stop-color: rgba(79, 85, 255, 0);"/>
+      <stop offset="0.218" style="stop-color: rgb(98, 103, 251);"/>
+      <stop offset="0.447" style="stop-color: rgb(181, 175, 175);"/>
+      <stop offset="0.771" style="stop-color: rgb(97, 102, 247);"/>
+      <stop offset="0.952" style="stop-color: rgb(131, 134, 242);"/>
+      <stop offset="1" style="stop-color: rgba(114, 119, 255, 0.1);"/>
+    </linearGradient>
+    <filter id="filter-4" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 2 horizontal">
+      <feGaussianBlur stdDeviation="2 0" edgeMode="none"/>
+    </filter>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="90.628" y1="399.688" x2="90.628" y2="456.536" id="gradient-8">
+      <stop offset="0" style="stop-color: rgba(16, 24, 185, 1)"/>
+      <stop offset="0.874" style="stop-color: rgb(9, 13, 101);"/>
+      <stop offset="1" style="stop-color: rgba(8, 12, 91, 0);"/>
+    </linearGradient>
+    <filter id="filter-6" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 2 horizontal">
+      <feGaussianBlur stdDeviation="2 0" edgeMode="none"/>
+    </filter>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="73.752" y1="327.015" x2="73.752" y2="462.521" id="gradient-4" gradientTransform="matrix(1, 0, 0, -1, 333.950724, 771.783673)" spreadMethod="pad">
+      <stop offset="0" style="stop-color: rgba(223, 231, 255, 0);"/>
+      <stop offset="0.203" style="stop-color: rgba(172, 181, 224, 0.13);"/>
+      <stop offset="0.767" style="stop-color: rgb(42, 51, 150);"/>
+      <stop offset="1" style="stop-color: rgb(14, 58, 162);"/>
+    </linearGradient>
+    <filter id="point-light-filter-1" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="point-light 1 1.19 1 1 36 0.35 0.01 1 rgba(76,9,9,1)">
+      <feSpecularLighting result="specular-lighting" lighting-color="rgba(76,9,9,1)" specularConstant="0.35" specularExponent="36">
+        <fePointLight x="1.19" y="1" z="1"/>
+      </feSpecularLighting>
+      <feDiffuseLighting result="diffuse-lighting" lighting-color="rgba(76,9,9,1)" diffuseConstant="0.01">
+        <fePointLight x="1.19" y="1" z="1"/>
+      </feDiffuseLighting>
+      <feMerge result="lighting">
+        <feMergeNode in="diffuse-lighting"/>
+        <feMergeNode in="specular-lighting"/>
+      </feMerge>
+      <feComposite in="SourceGraphic" in2="lighting" operator="arithmetic" k1="1" k2="1" k3="0" k4="0"/>
+    </filter>
+    <filter id="gaussian-blur-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="gaussian-blur 1 0.2">
+      <feGaussianBlur stdDeviation="0.2 0.2" edgeMode="none"/>
+    </filter>
+    <filter id="motion-blur-filter-3" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 30 horizontal">
+      <feGaussianBlur stdDeviation="30 0" edgeMode="none"/>
+    </filter>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="256.146" y1="171.719" x2="256.146" y2="182.624" id="gradient-5">
+      <stop offset="0" style="stop-color: rgba(0, 0, 0, 0);"/>
+      <stop offset="0.384" style="stop-color: rgb(165, 167, 239);"/>
+      <stop offset="1" style="stop-color: rgba(0, 16, 75, 0);"/>
+    </linearGradient>
+    <filter id="motion-blur-filter-2" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 25 horizontal">
+      <feGaussianBlur stdDeviation="25 0" edgeMode="none"/>
+    </filter>
+    <filter id="filter-3" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="motion-blur 1 50 horizontal">
+      <feGaussianBlur stdDeviation="50 0" edgeMode="none"/>
+    </filter>
+    <filter id="gaussian-blur-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%" bx:preset="gaussian-blur 1 10">
+      <feGaussianBlur stdDeviation="10 10" edgeMode="none"/>
+    </filter>
+  </defs>
+  <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);" d="M 85.867 268.149 L 85.867 269.92" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)" bx:d="M 85.867 268.149 R 85.867 269.92 1@5671aa8f"/>
+  <path style="fill: none;" d="M -52.122 441.742 C -52.122 441.742 -22.84331722892893 442.43677426328367 -15.221 441.523 C -11.73091176607813 441.10460324361173 -10.196797924882107 440.5040961918634 -7.693 439.739 C -5.1010680386012925 438.94697231536617 -2.6537074720271705 437.99401783233407 0.065 436.815 C 3.215462061491832 435.4487437959734 6.728880319184086 433.88645589689526 10.051 431.893 C 13.704920068533712 429.7004454844404 16.023500674603525 427.7657012235508 20.989 424.035 C 32.139347447306626 415.6574709462909 54.70019054277424 397.632679540403 74.401 382.09 C 98.89682253953814 362.76436159731105 156.686 316.873 156.686 316.873" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)" bx:d="M -52.122 441.742 R -15.221 441.523 R -7.693 439.739 R 0.065 436.815 R 10.051 431.893 R 20.989 424.035 R 74.401 382.09 R 156.686 316.873 1@a7f239eb"/>
+  <path d="M -52.062 442.238 C -52.062 442.238 -22.819 442.937 -15.161 442.019 C -11.609 441.594 -10.032 440.977 -7.547 440.217 C -4.937 439.42 -2.463 438.457 0.264 437.274 C 3.417 435.907 6.96 434.331 10.308 432.322 C 13.995 430.109 16.334 428.158 21.289 424.435 C 32.446 416.053 55.011 398.024 74.711 382.483 C 99.207 363.156 156.997 317.265 156.997 317.265 L 156.375 316.481 C 156.375 316.481 98.586 362.372 74.091 381.697 C 54.389 397.241 31.833 415.262 20.689 423.635 C 15.713 427.374 13.415 429.292 9.794 431.464 C 6.498 433.442 3.014 434.991 -0.134 436.356 C -2.844 437.532 -5.265 438.474 -7.839 439.261 C -10.361 440.032 -11.853 440.616 -15.281 441.027 C -22.867 441.936 -52.182 441.246 -52.182 441.246 C -52.146 441.244 -52.098 442.24 -52.063 442.238 L -52.062 442.238 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M -52.109 443.089 C -52.109 443.089 -22.819 443.093 -15.161 442.175 C -11.609 441.75 -9.596 441.257 -7.111 440.497 C -4.501 439.7 -2.276 438.55 0.451 437.367 C 3.604 436 7.175 434.277 10.523 432.268 C 14.21 430.055 16.334 428.158 21.289 424.435 C 32.446 416.053 55.011 398.024 74.711 382.483 C 99.207 363.156 156.997 317.265 156.997 317.265 C 178.736 299.867 165.009 310.256 158.122 315.158 C 157.548 315.567 156.826 316.172 156.375 316.481 C 156.375 316.481 98.586 362.372 74.091 381.697 C 54.389 397.241 31.743 414.769 20.599 423.142 C 15.623 426.881 13.2 428.808 9.579 430.98 C 6.283 432.958 3.014 434.555 -0.134 435.92 C -2.844 437.096 -5.047 437.976 -7.621 438.763 C -10.143 439.534 -11.791 439.744 -15.219 440.155 C -22.805 441.064 -52.166 440.521 -52.166 440.521 C -52.13 440.519 -52.098 442.24 -52.063 442.238 L -52.109 443.089 Z" style="fill: url(#gradient-0);" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <line style="fill: rgb(216, 216, 216); stroke-miterlimit: 1; stroke-dashoffset: -2px; vector-effect: non-scaling-stroke; stroke-width: 17px;" x1="48.023" y1="431.29" x2="192.391" y2="299.861" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <g transform="matrix(1, 0, 0, 1, -15.451761245727536, -19.018356323242188)">
+    <g>
+      <path d="M 58.467 450.616 L 198.551 329.906 C 198.759 329.376 233.876 294.284 204.107 324.338 L 68.486 455.495 C 68.731 454.76 68.225 457.313 60.729 455.805 C 59.753 455.609 59.144 455.099 58.433 453.306 C 57.911 451.989 58.467 450.616 58.467 450.616 Z" style="fill: url(#gradient-2); filter: url(#motion-blur-filter-1);"/>
+      <path d="M 60.212 453.336 C 60.212 453.336 69.4 445.116 73.994 441.006 C 89.677 426.975 121.044 398.912 121.044 398.912 L 102.872 417.225 L 65.444 455.76 L 60.873 454.504 L 60.212 453.336 Z" style="filter: url(#motion-blur-filter-0); fill: url(#gradient-6);"/>
+    </g>
+    <g transform="matrix(-1, 0, 0, 1, 496.377563, -3.089522)" style="">
+      <path d="M 58.467 450.616 L 198.551 329.906 C 198.759 329.376 233.876 294.284 204.107 324.338 L 68.486 455.495 C 68.731 454.76 68.225 457.313 60.729 455.805 C 59.753 455.609 59.144 455.099 58.433 453.306 C 57.911 451.989 58.467 450.616 58.467 450.616 Z" style="fill: url(#gradient-7); filter: url(#filter-4);"/>
+      <path d="M 60.212 453.336 C 60.212 453.336 69.4 445.116 73.994 441.006 C 89.677 426.975 121.044 398.912 121.044 398.912 L 102.872 417.225 L 65.444 455.76 L 60.873 454.504 L 60.212 453.336 Z" style="fill: url(#gradient-8); filter: url(#filter-6);"/>
+    </g>
+  </g>
+  <path d="M 182.339 306.863 L 182.281 306.987 C 182.451 306.627 191.446 298.547 196.629 294.386 C 197.928 293.343 199.014 292.524 199.664 292.13 C 199.834 292.028 200.001 291.94 200.126 291.89 C 200.278 291.829 200.592 291.793 200.764 291.89 C 200.896 291.964 201.039 292.214 201.048 292.349 C 201.054 292.439 201.027 292.578 200.997 292.658 C 200.952 292.782 200.854 292.957 200.736 293.134 C 199.857 294.442 196.455 298.157 189.006 305.677 L 53.177 438.637 L 48.279 435.093 L 43.218 431.434 L 182.339 306.863 Z M 48.865 434.283 L 53.081 437.333 L 188.303 304.965 C 193.92 299.295 197.195 295.832 198.821 293.941 C 198.361 294.288 197.834 294.701 197.255 295.166 C 192.093 299.311 183.249 307.183 183.211 307.353 L 183.191 307.442 L 44.81 431.351 L 48.865 434.283 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <line style="fill: rgb(216, 216, 216);" x1="49.613" y1="435.263" x2="87.074" y2="397.847" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M 86.74 396.78 L 88.128 398.22 L 49.117 435.726 L 47.729 434.286 L 86.74 396.78 Z M 49.143 434.312 L 86.714 398.194 L 49.143 434.312 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M 297.292 309.677 C 298.169 309.677 330.418 309.673 334.24 310.591 C 337.718 311.426 339.805 311.509 342.29 312.269 C 344.9 313.066 347.125 314.216 349.852 315.399 C 353.005 316.766 356.576 318.489 359.924 320.498 C 363.611 322.711 365.735 324.608 370.69 328.331 C 381.847 336.713 404.412 354.742 424.112 370.283 C 448.608 389.61 506.398 435.501 506.398 435.501 C 528.137 452.899 514.41 442.51 507.523 437.608 C 506.949 437.199 506.227 436.594 505.776 436.285 C 505.776 436.285 447.601 390.78 423.106 371.455 C 403.404 355.911 381.144 337.997 370 329.624 C 365.024 325.885 362.601 323.958 358.98 321.786 C 355.684 319.808 352.415 318.211 349.267 316.846 C 346.557 315.67 344.354 314.79 341.78 314.003 C 339.258 313.232 337.61 313.022 334.182 312.611 C 326.596 311.702 297.235 312.245 297.235 312.245 C 297.271 312.247 297.303 310.526 297.338 310.528 L 297.292 309.677 Z" style="fill: url(#gradient-4); filter: url(#point-light-filter-1) url(#gaussian-blur-filter-0); stroke-width: 23px; transform-origin: 407.702px 377.43px;" transform="matrix(-1, 0, 0, -1, 0, 0)"/>
+  <line style="fill: rgb(216, 216, 216); stroke-width: 19px;" x1="357.754" y1="48.511" x2="489.272" y2="49.401" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);" x1="371.174" y1="42.346" x2="369.778" y2="44.579" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M 150.374 153.937 L 325.059 158.481 L 325.033 159.481 L 150.348 154.937 L 150.374 153.937 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M 150.374 153.937 L 325.059 158.481 L 325.033 159.481 L 150.348 154.937 L 150.374 153.937 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M 150.374 153.937 L 325.059 158.481 L 325.033 159.481 L 150.348 154.937 L 150.374 153.937 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <path d="M 180.355 150.676 L 307.203 151.823 L 307.085 164.823 L 180.237 163.676 L 180.355 150.676 Z" style="fill: none;" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 0)"/>
+  <g transform="matrix(1, 0, 0, 1, -21.711763381958004, 81.14164733886719)">
+    <path d="M 209.362 142.253 L 223.876 148.171 L 234.563 159.031 L 254.222 167.446 L 275.987 163.099 L 297.901 150.949 L 315.166 148.003 L 331.562 166.328 L 373.376 180.389 L 343.548 191.515 L 311.542 186.959 L 254.157 158.421 L 234.234 188.478 L 177.82 185.867 C 155.338 171.239 140.21 176.776 140.21 176.776 C 140.21 176.776 198.075 140.573 209.362 142.253 Z" style="filter: url(#motion-blur-filter-3); fill: rgb(0, 77, 255); opacity: 0.62;"/>
+    <path d="M 325.785 181.799 L 258.857 182.624 L 197.922 180.204 L 140.107 175.703 L 197.448 172.461 L 259.165 172.442 L 325.865 173.226 L 372.186 177.157 L 325.785 181.799 Z" style="fill: url(#gradient-5); filter: url(#motion-blur-filter-2);"/>
+    <path d="M 168.281 205.293 L 192.289 218.363 L 228.461 223.993 L 251.118 220.575 L 279.379 220.425 L 306.29 218.083 L 343.543 199.043 L 360.438 191.211 L 371.771 174.652 L 341.943 163.526 L 309.937 168.082 L 255.55 219.606 L 232.629 166.563 L 176.215 169.174 C 153.733 183.802 138.605 178.265 138.605 178.265 C 138.605 178.265 156.994 206.973 168.281 205.293 Z" style="fill: rgb(0, 77, 255); filter: url(#filter-3) url(#gaussian-blur-filter-1); opacity: 0.4;"/>
+  </g>
+</svg>

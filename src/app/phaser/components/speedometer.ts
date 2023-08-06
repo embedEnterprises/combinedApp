@@ -5,8 +5,8 @@ export class Speedometer extends Phaser.GameObjects.Container {
   interval = 20;
   subInterval = 2;
   maxSpeed = 200;
-  startAngle = 135;
-  endAngle = 360 + 45;
+  startAngle = 150;
+  endAngle = 360 + 30;
   angleInterval =
     ((this.endAngle - this.startAngle) * this.interval) / this.maxSpeed;
   angleInterval1 =
@@ -51,7 +51,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
       scene,
       0,
       0,
-      this.radius - 90,
+      this.radius - 60,
       this.startAngle,
       this.endAngle,
       false
@@ -65,21 +65,21 @@ export class Speedometer extends Phaser.GameObjects.Container {
       this.endAngle,
       false
     );
-    this.smallInternalArc = new Phaser.GameObjects.Arc(
-      scene,
-      0,
-      0,
-      this.radius - 190,
-      this.startAngle + 30,
-      this.endAngle - 30,
-      false
-    );
-    this.speedText = new Phaser.GameObjects.Text(scene, -20, 0, "136", {
+    // this.smallInternalArc = new Phaser.GameObjects.Arc(
+    //   scene,
+    //   0,
+    //   0,
+    //   this.radius - 190,
+    //   this.startAngle + 30,
+    //   this.endAngle - 30,
+    //   false
+    // );
+    this.speedText = new Phaser.GameObjects.Text(scene, -10, -100, "136", {
       fontFamily: "digitBold",
       fontSize: "124px",
       color: "#ffffff",
     });
-    this.speedText1 = new Phaser.GameObjects.Text(scene, 145, 20, "kmh", {
+    this.speedText1 = new Phaser.GameObjects.Text(scene, 165, -80, "kmh", {
       fontFamily: "digitalPlayBold",
       fontSize: "34px",
       color: "#ffffff",
@@ -89,17 +89,17 @@ export class Speedometer extends Phaser.GameObjects.Container {
     this.speedText.setOrigin(0.5);
     this.speedText1.setOrigin(0.5);
 
-    this.graphics1.lineStyle(7, 0xa2a2a2, 1);
-    this.graphics1.beginPath();
-    this.graphics1.arc(
-      0,
-      0,
-      this.radius - 190,
-      Phaser.Math.DegToRad(this.startAngle + 30),
-      Phaser.Math.DegToRad(this.endAngle - 30),
-      false
-    );
-    this.graphics1.strokePath();
+    // this.graphics1.lineStyle(7, 0xa2a2a2, 1);
+    // this.graphics1.beginPath();
+    // this.graphics1.arc(
+    //   0,
+    //   0,
+    //   this.radius - 190,
+    //   Phaser.Math.DegToRad(this.startAngle + 30),
+    //   Phaser.Math.DegToRad(this.endAngle - 30),
+    //   false
+    // );
+    // this.graphics1.strokePath();
 
     //Draw the small circle on the end of external arc
     this.endCircle = new Phaser.GameObjects.Arc(
@@ -118,7 +118,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
       this.numberCircle,
       this.endCircle,
       this.externalArc,
-      this.smallInternalArc,
+      // this.smallInternalArc,
       this.speedText,
       this.speedText1,
       this.graphics,
@@ -127,7 +127,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
 
     utils.scaleToGameContainer(scene, this, this.externalArc, config);
 
-    this.smallInternalArc.setStrokeStyle(7, 0xa2a2a2, 1);
+    // this.smallInternalArc.setStrokeStyle(7, 0xa2a2a2, 1);
 
     //Draw numbers and ticks
     let angle = this.startAngle;
@@ -162,7 +162,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
         point2.y,
         this.smallTick.w,
         this.smallTick.h,
-        0xdd7f00
+        0xb7c2f7
       );
       rect.setOrigin(0.5, 0.5);
       rect.setAngle(angle);
@@ -185,7 +185,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
           ((this.endAngle - this.startAngle) * this.speed) / this.maxSpeed;
         // this.speedText.setText(Math.round(this.speed).toString());
         this.graphics.clear();
-        this.graphics.lineStyle(15, 0xff9401, 1);
+        this.graphics.lineStyle(15, 0xb7c2f7, 1);
         this.graphics.beginPath();
         this.graphics.arc(
           this.externalArc.x,
