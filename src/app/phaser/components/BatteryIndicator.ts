@@ -10,6 +10,7 @@ export class BatteryIndicator extends Phaser.GameObjects.Container {
   barY;
   barRadius;
   barCount;
+
   constructor(scene: Phaser.Scene, config) {
     super(scene, 0, 0); // Corrected the positioning
 
@@ -20,8 +21,10 @@ export class BatteryIndicator extends Phaser.GameObjects.Container {
       "lightingIcon"
     )
       .setOrigin(0)
-      .setScale(0.3, 0.2);
-    // lightingIcon.preFX.addShadow();s
+      .setScale(0.3, 0.2)
+      .setTint(0x00ff00)
+      .setAlpha(1)
+
     this.spacing = 20;
     this.barW = 70;
     this.barH = lightingIcon.displayHeight;
@@ -53,13 +56,11 @@ export class BatteryIndicator extends Phaser.GameObjects.Container {
     this.graphics.clear();
     // get the number of bar according to percentage
     const barCount1 = Math.ceil((percentage * 5) / 100);
-    //orange color
     // set fill style to three different colors, green for 5, yellow for 3 and red for 1
     if (barCount1 > 3) {
       this.graphics.fillStyle(0x00ff00, 1);
     } else if (barCount1 > 1) {
       this.graphics.fillStyle(0xffa500, 1);
-      // this.graphics.fillStyle(0xffff00, 1);
     } else {
       this.graphics.fillStyle(0xff0000, 1);
     }

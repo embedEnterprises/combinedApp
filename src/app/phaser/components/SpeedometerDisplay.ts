@@ -22,7 +22,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
     // this.drawTriangles();
     // this.drawLines();
     // this.add(this.graphics);
-    // add black backgraound color to speedometer
+    // // add black backgraound color to speedometer
     // this.graphics1 = scene.add.graphics();
     // this.graphics1.fillStyle(0x000000, 1);
     // this.graphics1.fillCircle(0, 0, this.radius + 50);

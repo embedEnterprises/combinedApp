@@ -16,7 +16,7 @@ import {
 // import { Speedometer } from "./components/speedometer";
 import { Dial } from "./components/dial";
 import { BatteryIndicator } from "./components/BatteryIndicator";
-import { Speedometer } from "./components/SpeedometerDisplay";
+import { Speedometer } from "./components/speedometer";
 import { GearShifter } from "./components/GearShifter";
 
 @Injectable()
@@ -62,15 +62,15 @@ export class GameScene extends Phaser.Scene {
   create() {
     const canva = document.getElementsByTagName("canvas")[0];
     canva.style.background =       "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
-    // canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
-    // this.steer = new Steer(this, 'steeringWheel');
-    // this.gas = new Break(this, gasConf);
-    // this.break = new Break(this, breakConf);
-    // this.gears = new Gears(this, gearsConf);
+    canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
+    this.steer = new Steer(this, 'steeringWheel');
+    this.gas = new Break(this, gasConf);
+    this.break = new Break(this, breakConf);
+    this.gears = new Gears(this, gearsConf);
     this.speedometer = new Speedometer(this, speedometerConf);
-    // this.ledKnob = new Dial(this, dialConf);
-    // this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
-    // this.gearShifter = new GearShifter(this, gearShifterConf);
+    this.ledKnob = new Dial(this, dialConf);
+    this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
+    this.gearShifter = new GearShifter(this, gearShifterConf);
 
 
     // this.add.existing(triangle);
