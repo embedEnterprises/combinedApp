@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import { scaleToGameW, scaleToGameZone, setPos } from "../utils";
+import { ServiceLocator } from "src/app/services/locator.services";
+import { WebsocketService } from "src/app/services/websocket.service";
 
 export default class Break extends Phaser.GameObjects.Mesh {
   debug;
@@ -8,9 +10,12 @@ export default class Break extends Phaser.GameObjects.Mesh {
   initialVal;
   pedalTwin;
   pedalSpeed: number = 500;
+  ws: WebsocketService;
 
   constructor(scene, conf) {
     super(scene, conf.x, conf.y, "break");
+    this.ws = ServiceLocator.getInstance("websocketService");
+
     Phaser.Geom.Mesh.GenerateGridVerts({
       texture: "break",
       mesh: this,
@@ -19,8 +24,6 @@ export default class Break extends Phaser.GameObjects.Mesh {
     this.scene.add.existing(this);
     this.scaleToGameW(this, conf.w);
     setPos(scene, this, conf.x, conf.y);
-    // this.setAngle(180);
-    // this.modelRotation.z = Phaser.Math.DegToRad(180);
     this.zone = this.scene.add
       .zone(
         this.x + this.displayWidth,
@@ -82,5 +85,4 @@ export default class Break extends Phaser.GameObjects.Mesh {
     var q = (2.5 * Number(this.scene.sys.game.config.width)) / 915;
     obj.panZ(q);
   }
-
 }

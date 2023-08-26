@@ -37,6 +37,7 @@
     "phaser": "^3.60.0",
     "phaser3-rex-plugins": "^1.1.81",
     "rxjs": "~6.6.3",
+    "rxjs-websockets": "^9.0.0",
     "svg-to-phaser-path": "^0.2.0",
     "tslib": "^2.4.1",
     "zone.js": "~0.13.1"

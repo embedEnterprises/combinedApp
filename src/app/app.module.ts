@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PhaserComponent } from './phaser/phaser.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { WebsocketService } from './services/websocket.service';
 
 const routes: Routes = [
   {path:'' , component:PhaserComponent},
@@ -32,6 +33,7 @@ const routes: Routes = [
           registrationStrategy: 'registerWhenStable:30000'
         }),
     ],
+    providers: [WebsocketService],
     bootstrap: [AppComponent],
     exports: [PhaserComponent]
 })
