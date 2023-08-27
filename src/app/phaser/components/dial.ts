@@ -1,5 +1,8 @@
+import { Data } from "@angular/router";
 import * as utils from "../utils";
 import * as Phaser from "phaser";
+import { DataStoreService } from "src/app/services/data-store.service";
+import { ServiceLocator } from "src/app/services/locator.services";
 
 export class Dial extends Phaser.GameObjects.Container {
   externalArc;
@@ -20,8 +23,11 @@ export class Dial extends Phaser.GameObjects.Container {
   angleInterval = (this.endAngle - this.startAngle) / (this.noOfTicks - 1);
   tween;
   intervalId;
+  dataStore: DataStoreService;
+
   constructor(scene, config) {
     super(scene, 0, 0);
+    this.dataStore = ServiceLocator.getInstance("dataStoreService");
     this.sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "dial")
       .setOrigin(0.5, 0.48)
       .setInteractive()
@@ -136,6 +142,7 @@ export class Dial extends Phaser.GameObjects.Container {
             this.angleInterval / 2
         ) {
           this.selected++;
+          this.dataStore.setLighting(this.selected);
           let prev = this.ang;
           this.ang = this.startAngle + this.selected * this.angleInterval;
         } else if (
@@ -145,6 +152,7 @@ export class Dial extends Phaser.GameObjects.Container {
             this.angleInterval / 2
         ) {
           this.selected--;
+          this.dataStore.setLighting(this.selected);
           let prev = this.ang;
           this.ang = this.startAngle + this.selected * this.angleInterval;
         }

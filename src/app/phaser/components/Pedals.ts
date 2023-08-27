@@ -2,8 +2,11 @@ import Phaser from "phaser";
 import { scaleToGameW, scaleToGameZone, setPos } from "../utils";
 import { ServiceLocator } from "src/app/services/locator.services";
 import { WebsocketService } from "src/app/services/websocket.service";
+import { DataStoreService } from "src/app/services/data-store.service";
+import { EventEmitter } from "events";
+import { BehaviorSubject } from "rxjs";
 
-export default class Break extends Phaser.GameObjects.Mesh {
+export default class Pedal extends Phaser.GameObjects.Mesh {
   debug;
   zone;
   ptrId;
@@ -15,6 +18,7 @@ export default class Break extends Phaser.GameObjects.Mesh {
   xuplim = 0.1;
   xlowlim = -1;
   value = 0;
+  private valueSubject = new BehaviorSubject<number>(0);
 
   constructor(scene, conf) {
     super(scene, conf.x, conf.y, "break");
@@ -63,7 +67,7 @@ export default class Break extends Phaser.GameObjects.Mesh {
 
   private handlePointerUp(e) {
     if (this.ptrId == e.id) {
-      this.scene.input.off("pointermove",this.handlePointerMove, this);
+      this.scene.input.off("pointermove", this.handlePointerMove, this);
       this.scene.input.off("pointerup", this.handlePointerDown, this);
       this.ptrId == null;
 
@@ -91,10 +95,19 @@ export default class Break extends Phaser.GameObjects.Mesh {
 
   public calculateValue() {
     //map the value of the rotation to the value of the break between 0-100
-    let val = Phaser.Math.Percent(this.modelRotation.x, this.xuplim, this.xlowlim);
+    let val = Phaser.Math.Percent(
+      this.modelRotation.x,
+      this.xuplim,
+      this.xlowlim
+    );
     if (val < 0.091) val = 0;
     if (val > 0.99) val = 1;
-    this.value= val;
+    this.value = val;
+    this.valueSubject.next(val);
+  }
+
+  getValueObservable() {
+    return this.valueSubject.asObservable();
   }
 
   public getValue() {
@@ -104,10 +117,35 @@ export default class Break extends Phaser.GameObjects.Mesh {
   public setValue(val) {
     this.value = val;
     // set value for modelrotation.x between xlowlim and xuplim
-    this.modelRotation.x = this.xlowlim + (this.xuplim - this.xlowlim) * val/100;
+    this.modelRotation.x =
+      this.xlowlim + ((this.xuplim - this.xlowlim) * val) / 100;
   }
 
   public isClicked() {
     return this.ptrId != null;
+  }
+}
+
+export class Break extends Pedal {
+  dataStore: DataStoreService;
+
+  constructor(scene, conf) {
+    super(scene, conf);
+    this.dataStore = ServiceLocator.getInstance("dataStoreService");
+    this.getValueObservable().subscribe((newValue: number) => {
+      this.dataStore.setBreak(newValue);
+    });
+  }
+}
+
+export class Gas extends Pedal {
+  dataStore: DataStoreService;
+
+  constructor(scene, conf) {
+    super(scene, conf);
+    this.dataStore = ServiceLocator.getInstance("dataStoreService");
+    this.getValueObservable().subscribe((newValue: number) => {
+      this.dataStore.setGas(newValue);
+    });
   }
 }

@@ -1,19 +1,25 @@
 import Phaser from "phaser";
 import * as utils from "../utils";
+import { Data } from "@angular/router";
+import { DataStoreService } from "src/app/services/data-store.service";
+import { ServiceLocator } from "src/app/services/locator.services";
 
 export class BatteryIndicator extends Phaser.GameObjects.Container {
   graphics;
-  spacing;
-  barW;
-  barH;
-  barX;
-  barY;
-  barRadius;
-  barCount;
+  spacing = 20;
+  barW = 70;
+  barH = 0;
+  barX = 0;
+  barY = 0;
+  barRadius = 10;
+  barCount = 5;
+  currentBattery = 0;
+  prevBattery = -1;
+  dataStore: DataStoreService;
 
   constructor(scene: Phaser.Scene, config) {
     super(scene, 0, 0); // Corrected the positioning
-
+    this.dataStore = ServiceLocator.getInstance("dataStoreService");
     const lightingIcon = new Phaser.GameObjects.Image(
       scene,
       0,
@@ -23,15 +29,10 @@ export class BatteryIndicator extends Phaser.GameObjects.Container {
       .setOrigin(0)
       .setScale(0.3, 0.2)
       .setTint(0x00ff00)
-      .setAlpha(1)
+      .setAlpha(1);
 
-    this.spacing = 20;
-    this.barW = 70;
     this.barH = lightingIcon.displayHeight;
     this.barX = lightingIcon.displayWidth + 5;
-    this.barY = 0;
-    this.barRadius = 10;
-    this.barCount = 5;
 
     this.graphics = scene.add.graphics();
     //set fill style to green color
@@ -50,9 +51,19 @@ export class BatteryIndicator extends Phaser.GameObjects.Container {
     this.add([lightingIcon]);
     utils.scaleToGameContainer(scene, this, lightingIcon, config);
     scene.add.existing(this);
+    this.update(this.dataStore.getBattery());
+    this.dataStore.batteryObservable.subscribe((data) => {
+      this.update(data);
+    });
   }
 
   update = (percentage: number) => {
+    if (percentage !== this.prevBattery) {
+      this.updateBattery(percentage);
+    }
+  };
+
+  updateBattery = (percentage: number) => {
     this.graphics.clear();
     // get the number of bar according to percentage
     const barCount1 = Math.ceil((percentage * 5) / 100);

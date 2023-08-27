@@ -28,6 +28,7 @@ export const steer = {
   x: 0.85,
   y: 0.7,
   w: 0.25,
+  maxRotation: 420,
 };
 
 export const dialConf = {

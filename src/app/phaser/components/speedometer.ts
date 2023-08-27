@@ -170,20 +170,7 @@ export class Speedometer extends Phaser.GameObjects.Container {
       angle += this.angleInterval1;
       this.endCircle.setPosition(point2.x, point2.y);
     }
-    var tween = this.scene.tweens.addCounter({
-      from: 0,
-      to: this.maxSpeed,
-      duration: 3000,
-      paused: true,
-      yoyo: true,
-      repeat: -1,
-      ease: Phaser.Math.Easing.Linear,
-      onUpdate: (val) => {
-        this.speed = val.getValue();
-        this.updateSpeedometer();
-      },
-    });
-    tween.resume();
+
     scene.add.existing(this);
   }
 
@@ -193,11 +180,6 @@ export class Speedometer extends Phaser.GameObjects.Container {
     const x = this.x + obj.x * scale + Math.cos(radians) * obj.radius * scale;
     const y = this.y + obj.y * scale + Math.sin(radians) * obj.radius * scale;
     return new Phaser.Math.Vector2(x, y);
-  }
-
-  // Override preUpdate method
-  preUpdate(time, delta) {
-    super.update(time, delta);
   }
 
   update(value) {

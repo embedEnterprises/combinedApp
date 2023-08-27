@@ -68,7 +68,6 @@ export class Gears extends Phaser.GameObjects.Container {
     const third = new Phaser.GameObjects.Zone(scene, second.x + gearWidth + gearDistance, yPos, gearWidth, gearHeight)
       .setOrigin(0).setName("3")
       .on('pointermove', (pointer, localX, localY)=> {handlePointerMove(pointer, localX, localY, third)});
-      console.log((gearHeight*0.5-gearWidth*0.5))
     const middle = new Phaser.GameObjects.Zone(scene, xPos, yPos + (gearHeight*0.5-gearWidth*0.5), width, gearWidth)
       .setOrigin(0)
       .on('pointermove', (e, localX, localY) => {

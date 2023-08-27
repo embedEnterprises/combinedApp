@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as Phaser from "phaser";
-import Break from "./components/break";
+import { Break, Gas } from "./components/Pedals";
 import Steer from "./components/steer";
 import { Gears } from "./components/gears";
 import {
@@ -11,29 +11,37 @@ import {
   gearsConf,
   gearShifterConf,
   batteryIndicatorConf,
-
 } from "./constants";
 // import { Speedometer } from "./components/speedometer";
 import { Dial } from "./components/dial";
 import { BatteryIndicator } from "./components/BatteryIndicator";
 import { Speedometer } from "./components/speedometer";
 import { GearShifter } from "./components/GearShifter";
+import { DataStoreService } from "../services/data-store.service";
+import { ServiceLocator } from "../services/locator.services";
 
 @Injectable()
 export class GameScene extends Phaser.Scene {
   private steer: Phaser.GameObjects.Sprite;
   private break: Break;
-  private gas: Break;
+  private gas: Gas;
   private gears: Gears;
   private speedometer: Speedometer;
   private ledKnob: Dial;
   private batteryIndicator: BatteryIndicator;
   private gearShifter: GearShifter;
-  private speed : number = 0;
-  private maxSpeed : number = speedometerConf.maxSpeed;
+  private speed: number = 0;
+  private maxSpeed: number = speedometerConf.maxSpeed;
+  private dataStore: DataStoreService;
+  private ws: any;
+  private speedTwin;
+  decRate: number = 60;
 
   constructor() {
     super({ key: "GameScene" });
+
+    this.dataStore = ServiceLocator.getInstance("dataStoreService");
+    this.ws = ServiceLocator.getInstance("websocketService");
   }
 
   preload() {
@@ -58,14 +66,15 @@ export class GameScene extends Phaser.Scene {
     this.load.svg("speedometer-content", "assets/speedometerContent.svg", {
       width: 800,
       height: 800,
-      });
+    });
   }
 
   create() {
     const canva = document.getElementsByTagName("canvas")[0];
-    canva.style.background = "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
+    canva.style.background =
+      "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
     canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
-    this.steer = new Steer(this, 'steeringWheel');
+    this.steer = new Steer(this, "steeringWheel");
     this.gas = new Break(this, gasConf);
     this.break = new Break(this, breakConf);
     this.gears = new Gears(this, gearsConf);
@@ -73,33 +82,92 @@ export class GameScene extends Phaser.Scene {
     this.ledKnob = new Dial(this, dialConf);
     this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
     this.gearShifter = new GearShifter(this, gearShifterConf);
+    this.dataStore.setBattery(50);
+    this.attachEvents();
   }
 
-  update( time, delta) {
+  update() {
     this.calculateSpeed();
     this.speedometer.update(this.speed);
   }
 
+  private createSpeedTwin() {
+    this.speedTwin = this.tweens.addCounter({
+      from: this.speed,
+      to: 0,
+      duration: Math.abs(this.speed * this.decRate),
+      repeat: 0,
+      ease: Phaser.Math.Easing.Expo.Out,
+      onUpdate: (tween) => {
+        this.speed = tween.getValue();
+        this.dataStore.setSpeed(this.speed);
+      },
+    });
+  }
+
   private calculateSpeed() {
     let gearVal = this.gearShifter.getCurrentGear();
-    // console.log(gearVal);
     let gasVal = this.gas.getValue();
     let breakVal = this.break.getValue();
 
-    if(gearVal === "P" || gearVal === "N"){
+    if (gasVal === 0 && breakVal === 0 && this.speed === 0) return;
+    if (gearVal === "P" || gearVal === "N") {
       this.speed = 0;
       return;
     }
-    
-    let factor=10;
 
-    let prevValue = this.speed;
-    this.speed = this.speed + (gasVal - breakVal) - 0.2;
-    if(this.speed > this.maxSpeed) this.speed = this.maxSpeed;
-    if(this.speed < 0) this.speed = 0;
+    if (gasVal === 0 && breakVal === 0 && this.speed !== 0) {
+      if (!(this.speedTwin && this.speedTwin.isPlaying()))
+        this.createSpeedTwin();
+      return;
+    }
 
-    if(gearVal === "R") this.speed = -this.speed;
+    if (gasVal !== 0 || breakVal !== 0) {
+      if (this.speedTwin && this.speedTwin.isPlaying()) {
+        this.speedTwin.stop();
+      }
+    }
 
+    this.speed = this.speed + (gasVal - breakVal * 2);
+    if (this.speed > this.maxSpeed) this.speed = this.maxSpeed;
+    if (this.speed < 0) this.speed = 0;
+
+    this.dataStore.setSpeed(this.speed);
   }
 
+  private attachEvents() {
+    this.dataStore.lightingObservable.subscribe((newValue: number) => {
+      this.ws.sendMessage("L:" + newValue);
+    });
+
+    this.dataStore.speedObservable$.subscribe(({ previous, current }) => {
+      if (previous !== current) {
+        if (this.gearShifter.getCurrentGear() === "R") {
+          this.ws.sendMessage("R:" + current);
+        } else {
+          this.ws.sendMessage("F:" + current);
+        }
+      }
+    });
+
+    this.dataStore.steerObservable$.subscribe(({ previous, current }) => {
+      if (previous !== current) {
+        this.ws.sendMessage("S:" + current);
+      }
+    });
+
+    this.ws.onMessage().subscribe((message) => {
+      let data = message.split(":");
+      switch (data[0]) {
+        case "L":
+          this.dataStore.setLighting(parseInt(data[1]));
+          break;
+        case "T":
+          this.dataStore.setBattery(parseInt(data[1]));
+          break;
+        default:
+          break;
+      }
+    });
+  }
 }

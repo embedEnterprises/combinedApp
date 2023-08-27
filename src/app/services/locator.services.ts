@@ -1,3 +1,4 @@
+import { DataStoreService } from './data-store.service';
 import { WebsocketService } from './websocket.service'; // Import your service
 
 export class ServiceLocator {
@@ -14,3 +15,4 @@ export class ServiceLocator {
 
 // Set your services in the ServiceLocator
 ServiceLocator.setInstance('websocketService', new WebsocketService());
+ServiceLocator.setInstance('dataStoreService', new DataStoreService());

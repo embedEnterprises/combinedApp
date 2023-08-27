@@ -1,4 +1,6 @@
+import { DataStoreService } from "src/app/services/data-store.service";
 import * as utils from "../utils";
+import { ServiceLocator } from "src/app/services/locator.services";
 
 export class GearShifter extends Phaser.GameObjects.Container {
   knob;
@@ -13,11 +15,13 @@ export class GearShifter extends Phaser.GameObjects.Container {
   topLim;
   bottomLim;
   currentGear = this.gearNames[0];
+  dataStore: DataStoreService;
 
   constructor(scene, config) {
     super(scene, config.x, config.y);
     const knobML = 60;
     const textML = 30;
+    this.dataStore = ServiceLocator.getInstance("dataStoreService");
     const background = new Phaser.GameObjects.Image(scene, 0, 0, "gearStand")
       .setOrigin(0)
       .setScale(1, 0.9);
@@ -77,6 +81,7 @@ export class GearShifter extends Phaser.GameObjects.Container {
 
   private switchGear = (gearName) => {
     this.currentGear = gearName;
+    this.dataStore.setGear(gearName);
     const zone = this.gearZones[gearName];
     let pos = this.getLocalPoint(zone.x, zone.y);
     this.knob.x = zone.x + zone.displayWidth / 2;
