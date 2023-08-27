@@ -11,6 +11,10 @@ export default class Break extends Phaser.GameObjects.Mesh {
   pedalTwin;
   pedalSpeed: number = 500;
   ws: WebsocketService;
+  rotateRate = 1;
+  xuplim = 0.1;
+  xlowlim = -1;
+  value = 0;
 
   constructor(scene, conf) {
     super(scene, conf.x, conf.y, "break");
@@ -47,14 +51,12 @@ export default class Break extends Phaser.GameObjects.Mesh {
 
   private handlePointerMove(e) {
     if (this.ptrId == e.id) {
-      const rotateRate = 1,
-        xuplim = 0.1,
-        xlowlim = -1;
-      let val = e.velocity.y * (rotateRate / 600);
-      let ldiff = xlowlim - this.modelRotation.x;
-      let udiff = xuplim - this.modelRotation.x;
+      let val = e.velocity.y * (this.rotateRate / 600);
+      let ldiff = this.xlowlim - this.modelRotation.x;
+      let udiff = this.xuplim - this.modelRotation.x;
       if (ldiff < val && udiff > val) {
         this.modelRotation.x += val;
+        this.calculateValue();
       }
     }
   }
@@ -74,6 +76,7 @@ export default class Break extends Phaser.GameObjects.Mesh {
         onUpdate: (tween) => {
           let val = tween.getValue();
           this.modelRotation.x = val;
+          this.calculateValue();
         },
       });
     }
@@ -84,5 +87,27 @@ export default class Break extends Phaser.GameObjects.Mesh {
     obj.scaleY = obj.scaleX;
     var q = (2.5 * Number(this.scene.sys.game.config.width)) / 915;
     obj.panZ(q);
+  }
+
+  public calculateValue() {
+    //map the value of the rotation to the value of the break between 0-100
+    let val = Phaser.Math.Percent(this.modelRotation.x, this.xuplim, this.xlowlim);
+    if (val < 0.091) val = 0;
+    if (val > 0.99) val = 1;
+    this.value= val;
+  }
+
+  public getValue() {
+    return this.value;
+  }
+
+  public setValue(val) {
+    this.value = val;
+    // set value for modelrotation.x between xlowlim and xuplim
+    this.modelRotation.x = this.xlowlim + (this.xuplim - this.xlowlim) * val/100;
+  }
+
+  public isClicked() {
+    return this.ptrId != null;
   }
 }

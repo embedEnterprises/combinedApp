@@ -40,6 +40,7 @@ export const speedometerConf = {
   x: 0.495,
   y: 0.72,
   w: 0.32,
+  maxSpeed: 200,
 };
 
 export const batteryIndicatorConf = { x: 0.4, y: 0.025, w: 0.04 };

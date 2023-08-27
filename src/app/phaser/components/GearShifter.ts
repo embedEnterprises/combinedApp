@@ -136,4 +136,8 @@ export class GearShifter extends Phaser.GameObjects.Container {
     gameObject.x = pos.x + this.spacing / 2;
     gameObject.y = pos.y + this.spacing / 2;
   };
+
+  getCurrentGear = () => {
+    return this.currentGear;
+  };
 }

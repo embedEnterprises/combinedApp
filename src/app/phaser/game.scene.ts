@@ -29,6 +29,8 @@ export class GameScene extends Phaser.Scene {
   private ledKnob: Dial;
   private batteryIndicator: BatteryIndicator;
   private gearShifter: GearShifter;
+  private speed : number = 0;
+  private maxSpeed : number = speedometerConf.maxSpeed;
 
   constructor() {
     super({ key: "GameScene" });
@@ -61,7 +63,7 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     const canva = document.getElementsByTagName("canvas")[0];
-    canva.style.background =       "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
+    canva.style.background = "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
     canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
     this.steer = new Steer(this, 'steeringWheel');
     this.gas = new Break(this, gasConf);
@@ -71,8 +73,33 @@ export class GameScene extends Phaser.Scene {
     this.ledKnob = new Dial(this, dialConf);
     this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
     this.gearShifter = new GearShifter(this, gearShifterConf);
-
-
-    // this.add.existing(triangle);
   }
+
+  update( time, delta) {
+    this.calculateSpeed();
+    this.speedometer.update(this.speed);
+  }
+
+  private calculateSpeed() {
+    let gearVal = this.gearShifter.getCurrentGear();
+    // console.log(gearVal);
+    let gasVal = this.gas.getValue();
+    let breakVal = this.break.getValue();
+
+    if(gearVal === "P" || gearVal === "N"){
+      this.speed = 0;
+      return;
+    }
+    
+    let factor=10;
+
+    let prevValue = this.speed;
+    this.speed = this.speed + (gasVal - breakVal) - 0.2;
+    if(this.speed > this.maxSpeed) this.speed = this.maxSpeed;
+    if(this.speed < 0) this.speed = 0;
+
+    if(gearVal === "R") this.speed = -this.speed;
+
+  }
+
 }

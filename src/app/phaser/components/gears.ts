@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 import * as utils from "../utils";
 
 export class Gears extends Phaser.GameObjects.Container {
+
   knob;
   gear;
   constructor(scene: Phaser.Scene, config) {
@@ -84,5 +85,9 @@ export class Gears extends Phaser.GameObjects.Container {
     scene.add.existing(this)
     utils.setPos(scene, this, config.x, config.y);
     this.setScale(scaleFactor * config.scale)
+  }
+
+  getCurrentGear() {
+    return this.gear;
   }
 }

@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import * as utils from "../utils";
-import { steer as config } from "../constants"
+import { steer as config } from "../constants";
 
 export default class Steer extends Phaser.GameObjects.Sprite {
   prevRad;
