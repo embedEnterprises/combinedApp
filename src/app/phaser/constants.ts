@@ -24,11 +24,17 @@ export const gasConf = {
   zh: 0.40,
 };
 
-export const steer = {
+export const steerConf = {
   x: 0.85,
   y: 0.7,
   w: 0.25,
   maxRotation: 420,
+};
+
+export const hornConf = {
+  x: steerConf.x,
+  y: steerConf.y,
+  w: 0.08,
 };
 
 export const dialConf = {

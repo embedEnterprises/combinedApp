@@ -15,7 +15,9 @@ export class DataStoreService {
   break: number = 0;
   gas: number = 0;
   steer: number = 0;
+  horn: boolean = false;
   ws: WebsocketService;
+
 
   //create behavior subject for each of the above variables
   
@@ -26,6 +28,7 @@ export class DataStoreService {
   public breakSubject = new BehaviorSubject<number>(this.break);
   public gasSubject = new BehaviorSubject<number>(this.gas);
   public steerSubject = new BehaviorSubject<number>(this.steer);
+  public hornSubject = new BehaviorSubject<boolean>(this.horn);
 
   // create observable for each of the above variables
   public speedObservable = this.speedSubject.asObservable();
@@ -35,6 +38,7 @@ export class DataStoreService {
   public breakObservable = this.breakSubject.asObservable();
   public gasObservable = this.gasSubject.asObservable();
   public steerObservable = this.steerSubject.asObservable();
+  public hornObservable = this.hornSubject.asObservable();
 
   public speedObservable$: Observable<{ previous: number; current: number }> = this.speedSubject.pipe(
     scan((acc, current) => ({ previous: acc.current, current }), { previous: null, current: null })
@@ -104,6 +108,14 @@ export class DataStoreService {
   }
   getSteer() {
     return this.steer;
+  }
+
+  setHorn(horn: boolean) {
+    this.horn = horn;
+    this.hornSubject.next(horn);
+  }
+  getHorn() {
+    return this.horn;
   }
 
   

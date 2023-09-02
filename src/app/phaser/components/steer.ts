@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 import * as utils from "../utils";
-import { steer as config } from "../constants";
+import { steerConf as config } from "../constants";
 import { DataStoreService } from "src/app/services/data-store.service";
 import { ServiceLocator } from "src/app/services/locator.services";
 
-export default class Steer extends Phaser.GameObjects.Sprite {
+export class Steer extends Phaser.GameObjects.Sprite {
   prevRad;
   steerPtr;
   rad;
@@ -13,11 +13,12 @@ export default class Steer extends Phaser.GameObjects.Sprite {
   ang = 0;
   dataStore: DataStoreService;
   prevAng = 0;
+  config;
 
-  constructor(scene: Phaser.Scene, texture) {
-    super(scene, 0, 0, texture);
+  constructor(scene: Phaser.Scene, config) {
+    super(scene, 0, 0, "steeringWheel");
     this.dataStore = ServiceLocator.getInstance("dataStoreService");
-
+    this.config = config;
     this.setOrigin(0.5, 0.5)
       .setInteractive()
       .on("pointerdown", this.onPointerDown)
@@ -78,8 +79,8 @@ export default class Steer extends Phaser.GameObjects.Sprite {
   }
 
   setValue(val) {
-    if (Math.abs(val) > config.maxRotation)
-      val = (config.maxRotation * val) / Math.abs(val);
+    if (Math.abs(val) > this.config.maxRotation)
+      val = (this.config.maxRotation * val) / Math.abs(val);
     this.ang = val;
     this.setAngle(val);
     this.dataStore.setSteer(val);

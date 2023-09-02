@@ -1,8 +1,15 @@
 import { Injectable } from "@angular/core";
 import * as Phaser from "phaser";
+//Components
 import { Break, Gas } from "./components/Pedals";
-import Steer from "./components/steer";
 import { Gears } from "./components/gears";
+import { Dial } from "./components/dial";
+import { BatteryIndicator } from "./components/BatteryIndicator";
+import { Speedometer } from "./components/speedometer";
+import { GearShifter } from "./components/GearShifter";
+import { Steer } from "./components/steer";
+import { Horn } from "./components/Horn";
+//Constants
 import {
   breakConf,
   gasConf,
@@ -11,12 +18,10 @@ import {
   gearsConf,
   gearShifterConf,
   batteryIndicatorConf,
+  steerConf,
+  hornConf,
 } from "./constants";
-// import { Speedometer } from "./components/speedometer";
-import { Dial } from "./components/dial";
-import { BatteryIndicator } from "./components/BatteryIndicator";
-import { Speedometer } from "./components/speedometer";
-import { GearShifter } from "./components/GearShifter";
+//Services
 import { DataStoreService } from "../services/data-store.service";
 import { ServiceLocator } from "../services/locator.services";
 
@@ -30,6 +35,7 @@ export class GameScene extends Phaser.Scene {
   private ledKnob: Dial;
   private batteryIndicator: BatteryIndicator;
   private gearShifter: GearShifter;
+  private horn: Phaser.GameObjects.Container;
   private speed: number = 0;
   private maxSpeed: number = speedometerConf.maxSpeed;
   private dataStore: DataStoreService;
@@ -74,7 +80,7 @@ export class GameScene extends Phaser.Scene {
     canva.style.background =
       "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
     canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
-    this.steer = new Steer(this, "steeringWheel");
+    this.steer = new Steer(this, steerConf);
     this.gas = new Break(this, gasConf);
     this.break = new Break(this, breakConf);
     this.gears = new Gears(this, gearsConf);
@@ -82,6 +88,7 @@ export class GameScene extends Phaser.Scene {
     this.ledKnob = new Dial(this, dialConf);
     this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
     this.gearShifter = new GearShifter(this, gearShifterConf);
+    this.horn = new Horn(this, hornConf);
     this.dataStore.setBattery(50);
     this.attachEvents();
   }
@@ -156,7 +163,13 @@ export class GameScene extends Phaser.Scene {
       }
     });
 
+    this.dataStore.hornObservable.subscribe((newValue: boolean) => {
+      let val = newValue ? 1 : 0;
+      this.ws.sendMessage("H:" + val);
+    });
+
     this.ws.onMessage().subscribe((message) => {
+      console.log(message);
       let data = message.split(":");
       switch (data[0]) {
         case "L":
