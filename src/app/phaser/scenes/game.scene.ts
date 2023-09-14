@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import * as Phaser from "phaser";
 //Components
-import { Break, Gas } from "./components/Pedals";
-import { Gears } from "./components/gears";
-import { Dial } from "./components/dial";
-import { BatteryIndicator } from "./components/BatteryIndicator";
-import { Speedometer } from "./components/speedometer";
-import { GearShifter } from "./components/GearShifter";
-import { Steer } from "./components/steer";
-import { Horn } from "./components/Horn";
+import { Break, Gas } from "../components/Pedals";
+import { Gears } from "../components/gears";
+import { Dial } from "../components/dial";
+import { BatteryIndicator } from "../components/BatteryIndicator";
+import { Speedometer } from "../components/speedometer";
+import { GearShifter } from "../components/GearShifter";
+import { Steer } from "../components/steer";
+import { Horn } from "../components/Horn";
 //Constants
 import {
   breakConf,
@@ -20,10 +20,10 @@ import {
   batteryIndicatorConf,
   steerConf,
   hornConf,
-} from "./constants";
+} from "../constants";
 //Services
-import { DataStoreService } from "../services/data-store.service";
-import { ServiceLocator } from "../services/locator.services";
+import { DataStoreService } from "../../services/data-store.service";
+import { ServiceLocator } from "../../services/locator.services";
 
 @Injectable()
 export class GameScene extends Phaser.Scene {
@@ -73,13 +73,23 @@ export class GameScene extends Phaser.Scene {
       width: 800,
       height: 800,
     });
+
+    this.load.image("bgImage" , "assets/AppBG2.jpg");
   }
 
   create() {
-    const canva = document.getElementsByTagName("canvas")[0];
-    canva.style.background =
-      "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
-    canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
+    // const canva = document.getElementsByTagName("canvas")[0];
+    // canva.style.background =
+    //   "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
+    // canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
+    // canva.style.backgroundSize = "contain";
+
+      // Load the background image
+  const backgroundImage = this.add.image(0, 0, "bgImage");
+  
+  // Set the background image to cover the entire game canvas
+  backgroundImage.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+  backgroundImage.setOrigin(0, 0); 
     this.steer = new Steer(this, steerConf);
     this.gas = new Break(this, gasConf);
     this.break = new Break(this, breakConf);
@@ -159,7 +169,11 @@ export class GameScene extends Phaser.Scene {
 
     this.dataStore.steerObservable$.subscribe(({ previous, current }) => {
       if (previous !== current) {
-        this.ws.sendMessage("S:" + current);
+        if (current > 0) {
+          this.ws.sendMessage("C:" + current);
+        } else {
+          this.ws.sendMessage("A:" + Math.abs(current));
+        }
       }
     });
 

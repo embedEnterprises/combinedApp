@@ -83,6 +83,12 @@ export class Steer extends Phaser.GameObjects.Sprite {
       val = (this.config.maxRotation * val) / Math.abs(val);
     this.ang = val;
     this.setAngle(val);
-    this.dataStore.setSteer(val);
+    let scaledVal = this.scaleValue(val, [-this.config.maxRotation, this.config.maxRotation], [-100, 100]);
+    this.dataStore.setSteer(scaledVal);
   }
+
+  scaleValue(number, [inMin, inMax], [outMin, outMax]) {
+    // if you need an integer value use Math.floor or Math.ceil here
+    return Math.floor((number - inMin) / (inMax - inMin) * (outMax - outMin) + outMin);
+}
 }

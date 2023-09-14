@@ -7,7 +7,7 @@ export const gearsConf = {
 export const breakConf = {
   x: 0.05,
   y: 0.7,
-  w: 0.1,
+  w: 0.15,
   zx: 0.055,
   zy: 0.5,
   zw: 0.05,
@@ -15,9 +15,9 @@ export const breakConf = {
 };
 
 export const gasConf = {
-  x: 0.12,
+  x: 0.14,
   y: 0.7,
-  w: 0.1,
+  w: 0.15,
   zx: 0.155,
   zy: 0.5,
   zw: 0.05,
@@ -28,7 +28,7 @@ export const steerConf = {
   x: 0.85,
   y: 0.7,
   w: 0.25,
-  maxRotation: 420,
+  maxRotation: 220,
 };
 
 export const hornConf = {
