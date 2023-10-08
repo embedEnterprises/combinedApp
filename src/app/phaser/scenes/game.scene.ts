@@ -3,7 +3,6 @@ import * as Phaser from "phaser";
 //Components
 import { Break, Gas } from "../components/Pedals";
 import { Gears } from "../components/gears";
-import { Dial } from "../components/dial";
 import { BatteryIndicator } from "../components/BatteryIndicator";
 import { Speedometer } from "../components/speedometer";
 import { GearShifter } from "../components/GearShifter";
@@ -13,9 +12,8 @@ import { Horn } from "../components/Horn";
 import {
   breakConf,
   gasConf,
-  dialConf,
+  ledKnobConf,
   speedometerConf,
-  gearsConf,
   gearShifterConf,
   batteryIndicatorConf,
   steerConf,
@@ -24,6 +22,8 @@ import {
 //Services
 import { DataStoreService } from "../../services/data-store.service";
 import { ServiceLocator } from "../../services/locator.services";
+import { LedKnob } from "../components/LedKnob";
+import { LedSelector } from "../components/LedSelector";
 
 @Injectable()
 export class GameScene extends Phaser.Scene {
@@ -32,7 +32,7 @@ export class GameScene extends Phaser.Scene {
   private gas: Gas;
   private gears: Gears;
   private speedometer: Speedometer;
-  private ledKnob: Dial;
+  private ledKnob: LedSelector;
   private batteryIndicator: BatteryIndicator;
   private gearShifter: GearShifter;
   private horn: Phaser.GameObjects.Container;
@@ -46,7 +46,6 @@ export class GameScene extends Phaser.Scene {
 
   constructor() {
     super({ key: "GameScene" });
-
     this.dataStore = ServiceLocator.getInstance("dataStoreService");
     this.ws = ServiceLocator.getInstance("websocketService");
   }
@@ -58,7 +57,6 @@ export class GameScene extends Phaser.Scene {
       { width: 300, height: 300 }
     );
     this.load.svg("break", "assets/break.svg", { width: 300, height: 300 });
-    // this.load.image("break", "assets/breakPng.png");
     this.load.svg("gas", "assets/gas.svg", { width: 300, height: 300 });
     this.load.svg("gearSet", "assets/gear.svg", { width: 300, height: 300 });
     this.load.image("dial", "assets/dial.png");
@@ -69,19 +67,18 @@ export class GameScene extends Phaser.Scene {
       height: 300,
     });
     this.load.obj("skull", "assets/breakObj2.obj");
-
     this.load.svg("speedometer-content", "assets/speedometerContent.svg", {
       width: 800,
       height: 800,
     });
-
     this.load.image("bgImage", "assets/AppBG2.jpg");
+    this.load.image("headlightIcon", "assets/headlights-fill.png");
+
   }
 
   create() {
     // Load the background image
     const backgroundImage = this.add.image(0, 0, "bgImage");
-
     // Set the background image to cover the entire game canvas
     backgroundImage.setDisplaySize(
       this.cameras.main.width,
@@ -92,7 +89,7 @@ export class GameScene extends Phaser.Scene {
     this.gas = new Gas(this, gasConf);
     this.break = new Break(this, breakConf);
     this.speedometer = new Speedometer(this, speedometerConf);
-    this.ledKnob = new Dial(this, dialConf);
+    this.ledKnob = new LedSelector(this, ledKnobConf);
     this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
     this.gearShifter = new GearShifter(this, gearShifterConf);
     this.horn = new Horn(this, hornConf);
@@ -123,7 +120,9 @@ export class GameScene extends Phaser.Scene {
     let gearVal = this.dataStore.gear; //this.gearShifter.getCurrentGear();
     let gasVal = this.gas.getValue();
     let breakVal = this.break.getValue();
+
     if (gasVal === 0 && breakVal === 0 && this.speed === 0) return;
+
     if (gearVal === "P" || gearVal === "N") {
       this.speed = 0;
       return;
@@ -141,15 +140,14 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    if (this.prevGear !== gearVal) {
+    this.speed = this.speed + (gasVal - breakVal * 2);
+
+    if (this.prevGear !== gearVal || this.speed < 0) {
       this.prevGear = gearVal;
       this.speed = 0;
-    } else {
-      this.speed = this.speed + (gasVal - breakVal * 2);
     }
-    
+
     if (this.speed > this.maxSpeed) this.speed = this.maxSpeed;
-    if (this.speed < 0) this.speed = 0;
 
     this.dataStore.setSpeed(this.speed);
   }

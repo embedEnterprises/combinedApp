@@ -42,10 +42,10 @@ export const hornConf = {
   w: 0.08,
 };
 
-export const dialConf = {
-  x: 0.12,
-  y: 0.3,
-  w: 0.08,
+export const ledKnobConf = {
+  x: 0.07,
+  y: 0.085,
+  w: 0.07,
 };
 
 export const speedometerConf = {
