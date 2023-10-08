@@ -22,6 +22,10 @@ export class GearShifter extends Phaser.GameObjects.Container {
     const knobML = 60;
     const textML = 30;
     this.dataStore = ServiceLocator.getInstance("dataStoreService");
+    if (!config.isVisible) {
+      this.currentGear = "D";
+      return;
+    }
     const background = new Phaser.GameObjects.Image(scene, 0, 0, "gearStand")
       .setOrigin(0)
       .setScale(1, 0.9);
@@ -126,7 +130,6 @@ export class GearShifter extends Phaser.GameObjects.Container {
   };
 
   private handleDrop = (pointer, gameObject, dropZone) => {
-    console.log("dropped at " + dropZone.name);
     this.graphics3.clear();
     this.graphics3.lineStyle(3, 0xff0000);
 

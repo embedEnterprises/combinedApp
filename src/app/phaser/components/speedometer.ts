@@ -206,7 +206,6 @@ export class Speedometer extends Phaser.GameObjects.Container {
     );
     this.graphics.strokePath();
     let point = this.getPointOnArc(this.externalArc, endAngle);
-    // console.log(point.x, point.y)
     this.endCircle.setPosition(point.x - this.x, point.y - this.y);
   }
 }

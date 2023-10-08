@@ -41,7 +41,8 @@ export class GameScene extends Phaser.Scene {
   private dataStore: DataStoreService;
   private ws: any;
   private speedTwin;
-  decRate: number = 60;
+  private decRate: number = 60;
+  private prevGear: string = "D";
 
   constructor() {
     super({ key: "GameScene" });
@@ -74,26 +75,22 @@ export class GameScene extends Phaser.Scene {
       height: 800,
     });
 
-    this.load.image("bgImage" , "assets/AppBG2.jpg");
+    this.load.image("bgImage", "assets/AppBG2.jpg");
   }
 
   create() {
-    // const canva = document.getElementsByTagName("canvas")[0];
-    // canva.style.background =
-    //   "linear-gradient(120deg, rgb(51 50 104) 0%, rgb(110, 165, 183) 100%)";
-    // canva.style.background = "url(assets/AppBG2.jpg) no-repeat center center";
-    // canva.style.backgroundSize = "contain";
+    // Load the background image
+    const backgroundImage = this.add.image(0, 0, "bgImage");
 
-      // Load the background image
-  const backgroundImage = this.add.image(0, 0, "bgImage");
-  
-  // Set the background image to cover the entire game canvas
-  backgroundImage.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
-  backgroundImage.setOrigin(0, 0); 
+    // Set the background image to cover the entire game canvas
+    backgroundImage.setDisplaySize(
+      this.cameras.main.width,
+      this.cameras.main.height
+    );
+    backgroundImage.setOrigin(0, 0);
     this.steer = new Steer(this, steerConf);
-    this.gas = new Break(this, gasConf);
+    this.gas = new Gas(this, gasConf);
     this.break = new Break(this, breakConf);
-    this.gears = new Gears(this, gearsConf);
     this.speedometer = new Speedometer(this, speedometerConf);
     this.ledKnob = new Dial(this, dialConf);
     this.batteryIndicator = new BatteryIndicator(this, batteryIndicatorConf);
@@ -123,10 +120,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   private calculateSpeed() {
-    let gearVal = this.gearShifter.getCurrentGear();
+    let gearVal = this.dataStore.gear; //this.gearShifter.getCurrentGear();
     let gasVal = this.gas.getValue();
     let breakVal = this.break.getValue();
-
     if (gasVal === 0 && breakVal === 0 && this.speed === 0) return;
     if (gearVal === "P" || gearVal === "N") {
       this.speed = 0;
@@ -145,7 +141,13 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    this.speed = this.speed + (gasVal - breakVal * 2);
+    if (this.prevGear !== gearVal) {
+      this.prevGear = gearVal;
+      this.speed = 0;
+    } else {
+      this.speed = this.speed + (gasVal - breakVal * 2);
+    }
+    
     if (this.speed > this.maxSpeed) this.speed = this.maxSpeed;
     if (this.speed < 0) this.speed = 0;
 

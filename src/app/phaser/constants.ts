@@ -1,3 +1,6 @@
+export const ANALOG = 0;
+export const DIGITAL = 1;
+
 export const gearsConf = {
   x: 0.9,
   y: 0.05,
@@ -11,7 +14,8 @@ export const breakConf = {
   zx: 0.055,
   zy: 0.5,
   zw: 0.05,
-  zh: 0.40,
+  zh: 0.4,
+  mode: DIGITAL,
 };
 
 export const gasConf = {
@@ -21,7 +25,8 @@ export const gasConf = {
   zx: 0.155,
   zy: 0.5,
   zw: 0.05,
-  zh: 0.40,
+  zh: 0.4,
+  mode: ANALOG,
 };
 
 export const steerConf = {
@@ -52,4 +57,4 @@ export const speedometerConf = {
 
 export const batteryIndicatorConf = { x: 0.4, y: 0.025, w: 0.04 };
 
-export const gearShifterConf = { x: 0.92  , y: 0.0, w: 0.08 };
+export const gearShifterConf = { x: 0.92, y: 0.0, w: 0.08, isVisible: false };

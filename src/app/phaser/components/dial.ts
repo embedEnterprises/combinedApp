@@ -82,7 +82,6 @@ export class Dial extends Phaser.GameObjects.Container {
       yoyo: false,
       ease: Phaser.Math.Easing.Linear,
       onUpdate: (val) => {
-        console.log("he");
         // this.ang = val.getValue();
         // this.sprite.setAngle(this.ang);
       },

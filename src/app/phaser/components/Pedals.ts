@@ -5,6 +5,7 @@ import { WebsocketService } from "src/app/services/websocket.service";
 import { DataStoreService } from "src/app/services/data-store.service";
 import { EventEmitter } from "events";
 import { BehaviorSubject } from "rxjs";
+import { ANALOG, DIGITAL } from "../constants";
 
 export default class Pedal extends Phaser.GameObjects.Mesh {
   debug;
@@ -14,16 +15,19 @@ export default class Pedal extends Phaser.GameObjects.Mesh {
   pedalTwin;
   pedalSpeed: number = 500;
   ws: WebsocketService;
-  rotateRate = 1;
-  xuplim = 0.1;
+  rotateRate = 4;
+  xcenter = 0.0;
   xlowlim = -1;
+  xuplim = 1;
   value = 0;
   private valueSubject = new BehaviorSubject<number>(0);
+  private gearSubject = new BehaviorSubject<string>("D");
+  mode = ANALOG;
+  direction = 'UP';
 
   constructor(scene, conf) {
     super(scene, conf.x, conf.y, "break");
-    this.ws = ServiceLocator.getInstance("websocketService");
-
+    this.mode = conf.mode;
     Phaser.Geom.Mesh.GenerateGridVerts({
       texture: "break",
       mesh: this,
@@ -43,14 +47,19 @@ export default class Pedal extends Phaser.GameObjects.Mesh {
       .setInteractive();
     scaleToGameZone(scene, this.zone, conf.zw, conf.zh);
     setPos(scene, this.zone, conf.zx, conf.zy);
-    this.initialVal = this.modelRotation.x;
+    this.initialVal = this.xcenter; 
     this.zone.on("pointerdown", this.handlePointerDown, this);
   }
 
   private handlePointerDown(e) {
     this.ptrId = e.id;
-    this.scene.input.on("pointermove", this.handlePointerMove, this);
     this.scene.input.on("pointerup", this.handlePointerUp, this);
+    if (this.mode === DIGITAL) {
+      this.modelRotation.x = this.xlowlim;
+      this.calculateValue();
+    } else {
+      this.scene.input.on("pointermove", this.handlePointerMove, this);
+    }
   }
 
   private handlePointerMove(e) {
@@ -71,18 +80,23 @@ export default class Pedal extends Phaser.GameObjects.Mesh {
       this.scene.input.off("pointerup", this.handlePointerDown, this);
       this.ptrId == null;
 
-      this.pedalTwin = this.scene.tweens.addCounter({
-        from: this.modelRotation.x,
-        to: -this.initialVal,
-        duration: Math.abs(this.modelRotation.x * this.pedalSpeed),
-        repeat: 0,
-        ease: Phaser.Math.Easing.Quadratic.Out,
-        onUpdate: (tween) => {
-          let val = tween.getValue();
-          this.modelRotation.x = val;
-          this.calculateValue();
-        },
-      });
+      if (this.mode === DIGITAL) {
+        this.modelRotation.x = this.xcenter;
+        this.calculateValue();
+      } else {
+        this.pedalTwin = this.scene.tweens.addCounter({
+          from: this.modelRotation.x,
+          to: -this.initialVal,
+          duration: Math.abs(this.modelRotation.x * this.pedalSpeed),
+          repeat: 0,
+          ease: Phaser.Math.Easing.Quadratic.Out,
+          onUpdate: (tween) => {
+            let val = tween.getValue();
+            this.modelRotation.x = val;
+            this.calculateValue();
+          },
+        });
+      }
     }
   }
 
@@ -93,13 +107,24 @@ export default class Pedal extends Phaser.GameObjects.Mesh {
     obj.panZ(q);
   }
 
-  public calculateValue() {
-    //map the value of the rotation to the value of the break between 0-100
-    let val = Phaser.Math.Percent(
-      this.modelRotation.x,
-      this.xuplim,
-      this.xlowlim
-    );
+  calculateValue() {
+    let val;
+    if (this.modelRotation.x > this.xcenter) {
+      val = Phaser.Math.Percent(
+        this.modelRotation.x,
+        this.xcenter,
+        this.xuplim
+      );
+      this.direction = 'DOWN';
+    } else if (this.modelRotation.x <= this.xcenter) {
+      val = Phaser.Math.Percent(
+        this.modelRotation.x,
+        this.xcenter,
+        this.xlowlim
+        );
+        this.direction = 'UP';
+    }
+
     if (val < 0.091) val = 0;
     if (val > 0.99) val = 1;
     this.value = val;
@@ -116,13 +141,17 @@ export default class Pedal extends Phaser.GameObjects.Mesh {
 
   public setValue(val) {
     this.value = val;
-    // set value for modelrotation.x between xlowlim and xuplim
+    // set value for modelrotation.x between xlowlim and xcenter
     this.modelRotation.x =
-      this.xlowlim + ((this.xuplim - this.xlowlim) * val) / 100;
+      this.xlowlim + ((this.xcenter - this.xlowlim) * val) / 100;
   }
 
   public isClicked() {
     return this.ptrId != null;
+  }
+
+  getGearObservable() {
+    return this.gearSubject.asObservable();
   }
 }
 
@@ -147,5 +176,17 @@ export class Gas extends Pedal {
     this.getValueObservable().subscribe((newValue: number) => {
       this.dataStore.setGas(newValue);
     });
+    this.getGearObservable().subscribe((newValue: string) => {
+      this.dataStore.setGear(newValue);
+    });
+  }
+
+  calculateValue() {
+    super.calculateValue();
+    if(this.direction == 'UP') {
+      this.dataStore.setGear("D");
+    } else  {
+      this.dataStore.setGear("R");
+    }
   }
 }
